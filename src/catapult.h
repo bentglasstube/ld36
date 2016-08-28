@@ -19,7 +19,13 @@ class Catapult {
 
     void set_movement(Direction dir);
     void ready_launch();
-    void launch();
+    bool launch();
+
+    float get_x() { return x_; }
+    float get_y() { return y_; }
+
+    void set_x(float x) { x_ = x; }
+    void set_y(float y) { y_ = y; }
 
   private:
 

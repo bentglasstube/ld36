@@ -87,10 +87,14 @@ void Catapult::ready_launch() {
   }
 }
 
-void Catapult::launch() {
+bool Catapult::launch() {
   if (state_ == Catapult::READY) {
     state_ = Catapult::LAUNCHING;
     wait_counter_ = _LAUNCH_TIME;
     dir_ = Catapult::NONE;
+
+    return true;
   }
+
+  return false;
 }

@@ -1,10 +1,16 @@
 #include "battle_screen.h"
 
+#include "math.h"
+
 void BattleScreen::init() {
   text_.reset(new Text("text"));
-  tiles_.reset(new SpriteMap("tiles", 16, 8, 8));
-  p1_.reset(new Catapult(30, 304));
-  p2_.reset(new Catapult(594, 304));
+  p1_.reset(new Catapult(30, 0));
+  p2_.reset(new Catapult(594, 0));
+
+  map_.generate_terrain();
+
+  p1_->set_y(map_.get_height(p1_->get_x()) * 8 - 8);
+  p2_->set_y(map_.get_height(p2_->get_x()) * 8 - 8);
 }
 
 bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
@@ -17,7 +23,10 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
   }
 
   if (input.key_pressed(SDLK_s)) p1_->ready_launch();
-  if (input.key_pressed(SDLK_w)) p1_->launch();
+  if (input.key_pressed(SDLK_w)) {
+    // TODO adjustable angle
+    if (p1_->launch()) launch_boulder(p1_->get_x(), p1_->get_y(), 0.2, 7 * M_PI / 4.0f);
+  }
 
   if (input.key_held(SDLK_k)) {
     p2_->set_movement(Catapult::LEFT);
@@ -28,29 +37,43 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
   }
 
   if (input.key_pressed(SDLK_l)) p2_->ready_launch();
-  if (input.key_pressed(SDLK_o)) p2_->launch();
+  if (input.key_pressed(SDLK_o)) {
+    // TODO adjustable angle
+    if (p2_->launch()) launch_boulder(p2_->get_x(), p2_->get_y(), 0.2, 5 * M_PI / 4.0f);
+  }
 
   p1_->update(audio, elapsed);
   p2_->update(audio, elapsed);
+
+  auto i = boulders_.begin();
+  while (i != boulders_.end()) {
+    (*i)->update(audio, elapsed);
+
+    // TODO collisions
+
+    ++i;
+  }
 
   return true;
 }
 
 void BattleScreen::draw(Graphics& graphics) {
-  for (int y = 0; y < 60; ++y) {
-    for (int x = 0; x < 80; ++x) {
-      // TODO real map data structure
-      int tile = y < 40 ? 0 : y == 40 ? 1 : 2;
-      tiles_->draw(graphics, tile, x * 8, y * 8, false);
-    }
-  }
+  map_.draw(graphics);
 
   p1_->draw(graphics, false);
   p2_->draw(graphics, true);
+
+  for (auto i = boulders_.begin(); i != boulders_.end(); ++i) {
+    (*i)->draw(graphics);
+  }
 
   // TODO draw UI
 }
 
 Screen* BattleScreen::next_screen() {
   return NULL;
+}
+
+void BattleScreen::launch_boulder(int x, int y, float v, float angle) {
+  boulders_.push_back(std::unique_ptr<Boulder>(new Boulder(x, y, v * cosf(angle), v * sinf(angle))));
 }

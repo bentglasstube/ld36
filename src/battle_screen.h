@@ -1,11 +1,14 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include "audio.h"
+#include "boulder.h"
 #include "catapult.h"
 #include "graphics.h"
 #include "input.h"
+#include "map.h"
 #include "screen.h"
 #include "spritemap.h"
 #include "text.h"
@@ -23,7 +26,11 @@ class BattleScreen : public Screen {
   private:
 
     std::unique_ptr<Text> text_;
-    std::unique_ptr<SpriteMap> tiles_;
 
     std::unique_ptr<Catapult> p1_, p2_;
+    std::vector<std::unique_ptr<Boulder>> boulders_;
+
+    Map map_;
+
+    void launch_boulder(int x, int y, float v, float angle);
 };
