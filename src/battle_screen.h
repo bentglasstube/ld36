@@ -9,6 +9,7 @@
 #include "graphics.h"
 #include "input.h"
 #include "map.h"
+#include "particle.h"
 #include "screen.h"
 #include "spritemap.h"
 #include "text.h"
@@ -29,8 +30,12 @@ class BattleScreen : public Screen {
 
     std::unique_ptr<Catapult> p1_, p2_;
     std::vector<std::unique_ptr<Boulder>> boulders_;
+    std::vector<Particle> particles_;
 
     Map map_;
 
     void launch_boulder(int x, int y, float v, float angle);
+
+    void add_dirt_particles(int x, int y, int n);
+    void add_smoke_particles(int x, int y, int n);
 };

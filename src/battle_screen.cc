@@ -2,6 +2,8 @@
 
 #include "math.h"
 
+#define randf(high, low)  (low + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(high - low)))
+
 void BattleScreen::init() {
   text_.reset(new Text("text"));
   map_.generate_terrain();
@@ -60,11 +62,20 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     if (boulder->get_y() > ground_height) {
       map_.destroy(boulder->get_x(), boulder->get_y());
       erase = true;
+
+      add_dirt_particles(boulder->get_x(), boulder->get_y(), 50);
     }
 
     // TODO collisions with players
 
     i = erase ? boulders_.erase(i) : i + 1;
+  }
+
+  auto j = particles_.begin();
+  while (j != particles_.end()) {
+    (*j).update(elapsed);
+    j = (*j).done() ? particles_.erase(j) : ++j;
+    // ++j;
   }
 
   return true;
@@ -80,6 +91,10 @@ void BattleScreen::draw(Graphics& graphics) {
     (*i)->draw(graphics);
   }
 
+  for (auto i = particles_.begin(); i != particles_.end(); ++i) {
+    (*i).draw(graphics);
+  }
+
   // TODO draw UI
 }
 
@@ -89,4 +104,18 @@ Screen* BattleScreen::next_screen() {
 
 void BattleScreen::launch_boulder(int x, int y, float v, float angle) {
   boulders_.push_back(std::unique_ptr<Boulder>(new Boulder(x, y, v * cosf(angle), v * sinf(angle))));
+}
+
+void BattleScreen::add_dirt_particles(int x, int y, int n) {
+  for (int i = 0; i < n; ++i) {
+    const float a = randf(M_PI, 2 * M_PI);
+    const float v = randf(0, 0.2);
+    particles_.push_back(Particle(x, y, v * cosf(a), v * sinf(a), .64f, .39f, .13f, 400));
+  }
+}
+
+void BattleScreen::add_smoke_particles(int x, int y, int n) {
+  for (int i = 0; i < n; ++i) {
+    particles_.push_back(Particle(x + randf(-3, 3), y + randf(-3, 3), 0, randf(-0.06, 0), 1, 1, 1, randf(400, 600)));
+  }
 }
