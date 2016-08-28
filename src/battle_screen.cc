@@ -4,8 +4,8 @@
 
 void BattleScreen::init() {
   text_.reset(new Text("text"));
-  p1_.reset(new Catapult(30, 0));
-  p2_.reset(new Catapult(594, 0));
+  p1_.reset(new Catapult(40, 0));
+  p2_.reset(new Catapult(592, 0));
 
   map_.generate_terrain();
 

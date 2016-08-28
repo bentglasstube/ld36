@@ -18,11 +18,20 @@ void Map::generate_terrain() {
     }
 
     // TODO generate better terrain
-    if (x % 4 == 0) {
+    if (x % 4 == 3) {
       int r = rand();
       if (r % 4 == 0) h--;
       if (r % 4 == 1) h++;
     }
+  }
+
+  // smooth edges
+  for (int x = 1; x < 80; ++x) {
+    int h1 = get_height(8 * x - 8);
+    int h2 = get_height(8 * x);
+
+    if (h2 < h1) data_[h2 + 1][x] = 5;
+    if (h2 > h1) data_[h2][x - 1] = 6;
   }
 }
 
