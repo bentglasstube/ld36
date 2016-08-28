@@ -24,9 +24,6 @@ class Catapult {
     float get_x() { return x_; }
     float get_y() { return y_; }
 
-    void set_x(float x) { x_ = x; }
-    void set_y(float y) { y_ = y; }
-
   private:
 
     enum State { MOBILE, LOADING, READY, LAUNCHING };

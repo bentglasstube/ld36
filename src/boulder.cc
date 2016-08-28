@@ -5,7 +5,7 @@ namespace {
 }
 
 Boulder::Boulder(int x, int y, float vx, float vy) : x_(x), y_(y), vx_(vx), vy_(vy) {
-  sprite_.reset(new Sprite("catapult", 7, 19, 2, 2));
+  sprite_.reset(new Sprite("catapult", 65, 9, 2, 2));
 }
 
 void Boulder::update(Audio&, unsigned int elapsed) {
@@ -14,6 +14,6 @@ void Boulder::update(Audio&, unsigned int elapsed) {
   vy_ += elapsed * GRAVITY;
 }
 
-void Boulder::draw(Graphics& graphics) {
+void Boulder::draw(Graphics& graphics) const {
   sprite_->draw(graphics, x_, y_);
 }

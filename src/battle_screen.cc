@@ -4,13 +4,9 @@
 
 void BattleScreen::init() {
   text_.reset(new Text("text"));
-  p1_.reset(new Catapult(40, 0));
-  p2_.reset(new Catapult(592, 0));
-
   map_.generate_terrain();
-
-  p1_->set_y(map_.get_height(p1_->get_x()) - 16);
-  p2_->set_y(map_.get_height(p2_->get_x()) - 16);
+  p1_.reset(new Catapult(48, map_.get_height(48)));
+  p2_.reset(new Catapult(592, map_.get_height(592)));
 }
 
 bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
@@ -25,7 +21,10 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
   if (input.key_pressed(SDLK_s)) p1_->ready_launch();
   if (input.key_pressed(SDLK_w)) {
     // TODO adjustable angle
-    if (p1_->launch()) launch_boulder(p1_->get_x(), p1_->get_y(), 0.2, 7 * M_PI / 4.0f);
+    if (p1_->launch()) launch_boulder(
+        p1_->get_x() - 6,
+        p1_->get_y() - 6,
+        0.2, 7 * M_PI / 4.0f);
   }
 
   if (input.key_held(SDLK_k)) {
@@ -39,7 +38,10 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
   if (input.key_pressed(SDLK_l)) p2_->ready_launch();
   if (input.key_pressed(SDLK_o)) {
     // TODO adjustable angle
-    if (p2_->launch()) launch_boulder(p2_->get_x(), p2_->get_y(), 0.2, 5 * M_PI / 4.0f);
+    if (p2_->launch()) launch_boulder(
+        p2_->get_x() + 6,
+        p2_->get_y() - 6,
+        0.2, 5 * M_PI / 4.0f);
   }
 
   p1_->update(audio, elapsed);
@@ -52,9 +54,11 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     bool erase = false;
     (*i)->update(audio, elapsed);
 
-    int ground_height = map_.get_height((*i)->get_x());
-    if ((*i)->get_y() > ground_height) {
-      map_.destroy((*i)->get_x(), (*i)->get_y());
+    const Boulder* boulder = (*i).get();
+
+    int ground_height = map_.get_height(boulder->get_x());
+    if (boulder->get_y() > ground_height) {
+      map_.destroy(boulder->get_x(), boulder->get_y());
       erase = true;
     }
 

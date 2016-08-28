@@ -57,20 +57,22 @@ void Catapult::draw(Graphics& graphics, bool flip) {
       break;
 
     case Catapult::READY:
-      tile = 11;
+      tile = 4;
       break;
 
     case Catapult::LAUNCHING:
-      tile = 8 + wait_counter_ / (_LAUNCH_TIME / 4);
+      tile = wait_counter_ / (_LAUNCH_TIME / 4);
       break;
   }
 
-  sprites_->draw(graphics, tile, x_, y_, flip);
-  // TODO draw debug hit box
+  sprites_->draw(graphics, tile, x_ - 8, y_ - 16, flip);
+
+  SDL_Rect b = hit_box();
+  graphics.draw_rect(&b, 1, 0, 0, 0.5f, false);
 }
 
 SDL_Rect Catapult::hit_box() {
-  return { 0, 0, 0, 0 };
+  return { (int)x_ - 7, (int)y_ - 8, 14, 8 };
 }
 
 void Catapult::set_movement(Catapult::Direction dir) {
