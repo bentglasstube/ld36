@@ -1,0 +1,8 @@
+build
+/*.tgz
+/*.app
+/*.exe
+/*.dll
+/*.glc
+/*.mkv
+/*.wav
