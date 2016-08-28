@@ -13,7 +13,6 @@ class Map {
     void generate_terrain();
     void draw(Graphics& graphics) const;
 
-    int get_tile(int x, int y) const;
     int get_height(int x) const;
 
     void destroy(int x, int y);
@@ -21,6 +20,5 @@ class Map {
   private:
 
     std::unique_ptr<SpriteMap> tiles_;
-    int data_[60][80];
-
+    int data_[120][160];
 };
