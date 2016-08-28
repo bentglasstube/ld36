@@ -4,7 +4,7 @@
 
 class Particle {
   public:
-    Particle(float x, float y, float vx, float vy, int color, int duration);
+    Particle(float x, float y, float vx, float vy, float gravity, int color, int duration);
 
     void update(unsigned int elapsed);
     void draw(Graphics& graphics) const;
@@ -13,6 +13,6 @@ class Particle {
 
   private:
 
-    float x_, y_, vx_, vy_;
+    float x_, y_, vx_, vy_, gravity_;
     int color_, duration_, timer_;
 };
