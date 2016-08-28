@@ -21,8 +21,8 @@ void Map::generate_terrain() {
 
 void Map::draw(Graphics& graphics) const {
   for (int x = 0; x < 640; ++x) {
-    graphics.draw_pixel(x, heights_[x], .26, .53, .10, 1);
-    graphics.draw_line(x, heights_[x] + 1, x, 640, .64, .39, .13, 1);
+    graphics.draw_pixel(x, heights_[x], 0x44891aff);
+    graphics.draw_line(x, heights_[x] + 1, x, 640, 0xa46422ff);
   }
 }
 

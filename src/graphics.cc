@@ -15,6 +15,7 @@ Graphics::Graphics() {
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
   SDL_RenderSetLogicalSize(renderer, width, height);
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 }
 
 Graphics::~Graphics() {
@@ -64,18 +65,18 @@ void Graphics::clear() {
   SDL_RenderClear(renderer);
 }
 
-void Graphics::draw_pixel(int x, int y, float r, float g, float b, float a) {
-  set_color(r, g, b, a);
+void Graphics::draw_pixel(int x, int y, int color) {
+  set_color(color);
   SDL_RenderDrawPoint(renderer, x, y);
 }
 
-void Graphics::draw_line(int x1, int y1, int x2, int y2, float r, float g, float b, float a) {
-  set_color(r, g, b, a);
+void Graphics::draw_line(int x1, int y1, int x2, int y2, int color) {
+  set_color(color);
   SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-void Graphics::draw_rect(SDL_Rect* rect, float r, float g, float b, float a, bool filled) {
-  set_color(r, g, b, a);
+void Graphics::draw_rect(SDL_Rect* rect, int color, bool filled) {
+  set_color(color);
   filled ? SDL_RenderFillRect(renderer, rect) : SDL_RenderDrawRect(renderer, rect);
 }
 
@@ -92,7 +93,11 @@ SDL_Texture* Graphics::load_image(const std::string& file) {
   return textures[path];
 }
 
-void Graphics::set_color(float r, float g, float b, float a) {
-  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-  SDL_SetRenderDrawColor(renderer, 255 * r, 255 * g, 255 * b, 255 * a);
+void Graphics::set_color(int color) {
+  const int r = (color & 0xff000000) >> 24;
+  const int g = (color & 0x00ff0000) >> 16;
+  const int b = (color & 0x0000ff00) >> 8;
+  const int a = (color & 0x000000ff);
+
+  SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }

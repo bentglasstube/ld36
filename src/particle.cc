@@ -1,8 +1,8 @@
 #include "particle.h"
 
-Particle::Particle(float x, float y, float vx, float vy, float r, float g, float b, int duration) :
+Particle::Particle(float x, float y, float vx, float vy, int color, int duration) :
   x_(x), y_(y), vx_(vx), vy_(vy),
-  r_(r), g_(g), b_(b),
+  color_(color),
   duration_(duration), timer_(0) {}
 
 void Particle::update(unsigned int elapsed) {
@@ -12,5 +12,6 @@ void Particle::update(unsigned int elapsed) {
 }
 
 void Particle::draw(Graphics& graphics) const {
-  graphics.draw_pixel(x_, y_, r_, g_, b_, 1 - (timer_ / (float) duration_));
+  int a = 255 * (1 - timer_ / (float) duration_);
+  graphics.draw_pixel(x_, y_, (color_ & 0xffffff00) | a);
 }
