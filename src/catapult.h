@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "audio.h"
 #include "graphics.h"
+#include "map.h"
 #include "spritemap.h"
 
 class Catapult {
@@ -12,7 +12,7 @@ class Catapult {
     enum Direction { NONE, LEFT, RIGHT };
 
     Catapult(int x, int y);
-    void update(Audio& audio, unsigned int elapsed);
+    void update(const Map& map, const unsigned int elapsed);
     void draw(Graphics& graphics, bool flip) const;
 
     SDL_Rect hit_box() const;
@@ -27,13 +27,14 @@ class Catapult {
     float get_x() const { return x_; }
     float get_y() const { return y_; }
 
+    float get_angle() const { return angle_; }
     float get_launch_angle() const { return launch_angle_; }
 
   private:
 
     enum State { MOBILE, LOADING, READY, LAUNCHING };
 
-    float x_, y_, launch_angle_;
+    float x_, y_, angle_, launch_angle_;
     Direction dir_;
     State state_;
     int wait_counter_;

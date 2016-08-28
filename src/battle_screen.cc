@@ -36,9 +36,9 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     if (p1_->launch()) {
       audio.play_sample("launch");
       launch_boulder(
-        p1_->get_x() - 6,
-        p1_->get_y() - 6,
-        0.2, 2 * M_PI - p1_->get_launch_angle());
+        p1_->get_x() - 7,
+        p1_->get_y() - 7,
+        0.2, 2 * M_PI - p1_->get_launch_angle() + p1_->get_angle());
     }
   }
 
@@ -62,14 +62,14 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     if (p2_->launch()) {
       audio.play_sample("launch");
       launch_boulder(
-        p2_->get_x() + 6,
-        p2_->get_y() - 6,
-        0.2, M_PI + p2_->get_launch_angle());
+        p2_->get_x() + 7,
+        p2_->get_y() - 7,
+        0.2, M_PI + p2_->get_launch_angle() + p2_->get_angle());
     }
   }
 
-  p1_->update(audio, elapsed);
-  p2_->update(audio, elapsed);
+  p1_->update(map_, elapsed);
+  p2_->update(map_, elapsed);
 
   // TODO adjust catapults to ground
 

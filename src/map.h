@@ -11,10 +11,10 @@ class Map {
     Map();
 
     void generate_terrain();
-    void draw(Graphics& graphics);
+    void draw(Graphics& graphics) const;
 
-    int get_tile(int x, int y);
-    int get_height(int x);
+    int get_tile(int x, int y) const;
+    int get_height(int x) const;
 
     void destroy(int x, int y);
 

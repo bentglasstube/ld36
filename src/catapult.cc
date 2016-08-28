@@ -4,17 +4,18 @@
 
 namespace {
   const static float _X_VELO = 0.01f;
+  const static float _Y_VELO = 0.1f;
   const static int _LOAD_TIME = 1000;
   const static int _LAUNCH_TIME = 150;
 };
 
 Catapult::Catapult(int x, int y) :
-  x_(x), y_(y), launch_angle_(M_PI / 4.0f),
+  x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
   dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0) {
   sprites_.reset(new SpriteMap("catapult", 8, 16, 16));
 }
 
-void Catapult::update(Audio&, unsigned int elapsed) {
+void Catapult::update(const Map& map, const unsigned int elapsed) {
   if (wait_counter_ > 0) {
     wait_counter_ -= elapsed;
 
@@ -32,6 +33,8 @@ void Catapult::update(Audio&, unsigned int elapsed) {
           break;
       }
     }
+
+    return;
   }
 
   switch (dir_) {
@@ -45,6 +48,17 @@ void Catapult::update(Audio&, unsigned int elapsed) {
 
     default:
       break;
+  }
+
+  const float y1 = map.get_height(x_ - 4), y2 = map.get_height(x_ + 4);
+  const float ny = (y1 + y2) / 2.0f;
+
+  if (y_ > ny + 10) {
+    // TODO falling state
+    y_ += elapsed * _Y_VELO;
+  } else {
+    y_ = ny;
+    angle_ = atan2f(y2 - y1, 8.0f);
   }
 }
 
@@ -69,14 +83,14 @@ void Catapult::draw(Graphics& graphics, bool flip) const {
       break;
   }
 
-  sprites_->draw(graphics, tile, x_ - 8, y_ - 16, flip);
+  sprites_->draw_ex(graphics, tile, x_ - 8, y_ - 16, flip, angle_, 8, 16);
 
   SDL_Rect b = hit_box();
   graphics.draw_rect(&b, 1, 0, 0, 0.5f, false);
 }
 
 SDL_Rect Catapult::hit_box() const {
-  return { (int)x_ - 7, (int)y_ - 8, 14, 8 };
+  return { (int)x_ - 6, (int)y_ - 6, 12, 6 };
 }
 
 bool Catapult::point_within(float x, float y) const {

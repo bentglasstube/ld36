@@ -35,10 +35,10 @@ void Map::generate_terrain() {
   }
 }
 
-void Map::draw(Graphics& graphics) {
+void Map::draw(Graphics& graphics) const {
   for (int y = 0; y < 60; ++y) {
     for (int x = 0; x < 80; ++x) {
-      tiles_->draw(graphics, data_[y][x], x * 8, y * 8, false);
+      tiles_->draw(graphics, data_[y][x], x * 8, y * 8);
     }
   }
 
@@ -47,11 +47,11 @@ void Map::draw(Graphics& graphics) {
   }
 }
 
-int Map::get_tile(int x, int y) {
+int Map::get_tile(int x, int y) const {
   return data_[y / 8][x / 8];
 }
 
-int Map::get_height(int x) {
+int Map::get_height(int x) const {
   const int ix = x / 8;
   for (int y = 58; y > 0; --y) {
     if (data_[y][ix] == 0) {

@@ -15,5 +15,5 @@ void Sprite::draw(Graphics& graphics, int x, int y) {
   dest.w = rect.w;
   dest.h = rect.h;
 
-  graphics.blit(file, &rect, &dest, Graphics::NONE);
+  graphics.blit(file, &rect, &dest);
 }

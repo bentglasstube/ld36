@@ -26,7 +26,12 @@ Graphics::~Graphics() {
   SDL_DestroyWindow(window);
 }
 
-void Graphics::blit(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect, Graphics::FlipDirection flip) {
+void Graphics::blit(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect) {
+  SDL_Texture* texture = load_image(file);
+  SDL_RenderCopy(renderer, texture, srect, drect);
+}
+
+void Graphics::blit_ex(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect, const float angle, const SDL_Point* center, const Graphics::FlipDirection flip) {
   SDL_RendererFlip f = SDL_FLIP_NONE;
   switch (flip) {
     case NONE:
@@ -47,7 +52,7 @@ void Graphics::blit(const std::string& file, const SDL_Rect* srect, const SDL_Re
   }
 
   SDL_Texture* texture = load_image(file);
-  SDL_RenderCopyEx(renderer, texture, srect, drect, 0.0f, NULL, f);
+  SDL_RenderCopyEx(renderer, texture, srect, drect, angle * 180.0f / M_PI, center, f);
 }
 
 void Graphics::flip() {

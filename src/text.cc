@@ -26,7 +26,7 @@ void Text::draw(Graphics& graphics, const std::string& text, int x, int y, Text:
     source.x = width * (n % 16);
     source.y = width * 2 * (n / 16);
 
-    graphics.blit(file, &source, &dest, Graphics::NONE);
+    graphics.blit(file, &source, &dest);
 
     if ((*i) == '\n' && alignment == LEFT) {
       dest.x = x;
