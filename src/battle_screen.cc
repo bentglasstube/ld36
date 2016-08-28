@@ -32,10 +32,13 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 
   if (input.key_pressed(SDLK_s)) p1_->ready_launch();
   if (input.key_pressed(SDLK_w)) {
-    if (p1_->launch()) launch_boulder(
+    if (p1_->launch()) {
+      audio.play_sample("launch");
+      launch_boulder(
         p1_->get_x() - 6,
         p1_->get_y() - 6,
         0.2, 2 * M_PI - p1_->get_launch_angle());
+    }
   }
 
   if (input.key_held(SDLK_k)) {
@@ -54,10 +57,13 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 
   if (input.key_pressed(SDLK_l)) p2_->ready_launch();
   if (input.key_pressed(SDLK_o)) {
-    if (p2_->launch()) launch_boulder(
+    if (p2_->launch()) {
+      audio.play_sample("launch");
+      launch_boulder(
         p2_->get_x() + 6,
         p2_->get_y() - 6,
         0.2, M_PI + p2_->get_launch_angle());
+    }
   }
 
   p1_->update(audio, elapsed);
@@ -67,17 +73,35 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 
   auto boulder = boulders_.begin();
   while (boulder != boulders_.end()) {
-    bool erase = false;
     (*boulder).update(audio, elapsed);
 
+    bool erase = false;
     int ground_height = map_.get_height((*boulder).get_x());
-    if ((*boulder).get_y() > ground_height) {
+
+    if (p1_->point_within((*boulder).get_x(), (*boulder).get_y())) {
+      // TODO battle over
+
+      add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 500);
+      add_smoke_particles((*boulder).get_x(), (*boulder).get_y(), 100);
+      audio.play_sample("explode");
+
+      erase = true;
+    } else if (p2_->point_within((*boulder).get_x(), (*boulder).get_y())) {
+      // TODO battle over
+
+      add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 500);
+      add_smoke_particles((*boulder).get_x(), (*boulder).get_y(), 100);
+      audio.play_sample("explode");
+
+      erase = true;
+    } else if ((*boulder).get_y() > ground_height) {
       map_.destroy((*boulder).get_x(), (*boulder).get_y());
       add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 50);
+
+      audio.play_sample("thud");
+
       erase = true;
     }
-
-    // TODO collisions with players
 
     boulder = erase ? boulders_.erase(boulder) : boulder + 1;
   }

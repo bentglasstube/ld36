@@ -48,7 +48,7 @@ void Catapult::update(Audio&, unsigned int elapsed) {
   }
 }
 
-void Catapult::draw(Graphics& graphics, bool flip) {
+void Catapult::draw(Graphics& graphics, bool flip) const {
   int tile = 0;
 
   switch (state_) {
@@ -75,8 +75,13 @@ void Catapult::draw(Graphics& graphics, bool flip) {
   graphics.draw_rect(&b, 1, 0, 0, 0.5f, false);
 }
 
-SDL_Rect Catapult::hit_box() {
+SDL_Rect Catapult::hit_box() const {
   return { (int)x_ - 7, (int)y_ - 8, 14, 8 };
+}
+
+bool Catapult::point_within(float x, float y) const {
+  const SDL_Rect b = hit_box();
+  return x > b.x && x < b.x + b.w && y > b.y && y < b.y + b.h;
 }
 
 void Catapult::adjust_angle(float amount) {

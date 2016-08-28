@@ -13,19 +13,21 @@ class Catapult {
 
     Catapult(int x, int y);
     void update(Audio& audio, unsigned int elapsed);
-    void draw(Graphics& graphics, bool flip);
+    void draw(Graphics& graphics, bool flip) const;
 
-    SDL_Rect hit_box();
+    SDL_Rect hit_box() const;
+
+    bool point_within(float x, float y) const;
 
     void adjust_angle(float amount);
     void set_movement(Direction dir);
     void ready_launch();
     bool launch();
 
-    float get_x() { return x_; }
-    float get_y() { return y_; }
+    float get_x() const { return x_; }
+    float get_y() const { return y_; }
 
-    float get_launch_angle() { return launch_angle_; }
+    float get_launch_angle() const { return launch_angle_; }
 
   private:
 
