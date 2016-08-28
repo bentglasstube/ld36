@@ -21,7 +21,7 @@ class Catapult {
 
     void adjust_angle(float amount);
     void set_movement(Direction dir);
-    void ready_launch();
+    bool ready_launch();
     bool launch();
 
     float get_x() const { return x_; }

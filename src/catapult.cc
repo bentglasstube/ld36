@@ -98,12 +98,16 @@ void Catapult::set_movement(Catapult::Direction dir) {
   }
 }
 
-void Catapult::ready_launch() {
+bool Catapult::ready_launch() {
   if (state_ == Catapult::MOBILE) {
     state_ = Catapult::LOADING;
     wait_counter_ = _LOAD_TIME;
     dir_ = Catapult::NONE;
+
+    return true;
   }
+
+  return false;
 }
 
 bool Catapult::launch() {

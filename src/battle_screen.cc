@@ -30,8 +30,9 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     p1_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
   }
 
-  if (input.key_pressed(SDLK_s)) p1_->ready_launch();
-  if (input.key_pressed(SDLK_w)) {
+  if (input.key_pressed(SDLK_s)) {
+    if (p1_->ready_launch()) audio.play_sample("ready");
+  } else if (input.key_pressed(SDLK_w)) {
     if (p1_->launch()) {
       audio.play_sample("launch");
       launch_boulder(
@@ -55,8 +56,9 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     p2_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
   }
 
-  if (input.key_pressed(SDLK_l)) p2_->ready_launch();
-  if (input.key_pressed(SDLK_o)) {
+  if (input.key_pressed(SDLK_l)) {
+    if (p2_->ready_launch()) audio.play_sample("ready");
+  } else if (input.key_pressed(SDLK_o)) {
     if (p2_->launch()) {
       audio.play_sample("launch");
       launch_boulder(
@@ -152,6 +154,6 @@ void BattleScreen::add_dirt_particles(int x, int y, int n) {
 
 void BattleScreen::add_smoke_particles(int x, int y, int n) {
   for (int i = 0; i < n; ++i) {
-    particles_.push_back(Particle(x + randf(-3, 3), y + randf(-3, 3), 0, randf(-0.06, 0), 1, 1, 1, randf(400, 600)));
+    particles_.push_back(Particle(x + randf(-3, 3), y + randf(-3, 3), randf(-0.02, 0.02), randf(-0.06, 0), 1, 1, 1, randf(400, 600)));
   }
 }
