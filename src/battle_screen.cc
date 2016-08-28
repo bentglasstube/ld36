@@ -4,8 +4,12 @@
 
 #define randf(high, low)  (low + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(high - low)))
 
+namespace {
+  const static float ANGLE_ADJUST_RATE = 0.0001f;
+}
+
 void BattleScreen::init() {
-  text_.reset(new Text("text"));
+  text_.reset(new Text("smalltext", 4));
   map_.generate_terrain();
   p1_.reset(new Catapult(48, map_.get_height(48)));
   p2_.reset(new Catapult(592, map_.get_height(592)));
@@ -20,13 +24,18 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     p1_->set_movement(Catapult::NONE);
   }
 
+  if (input.key_held(SDLK_q)) {
+    p1_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
+  } else if (input.key_held(SDLK_e)) {
+    p1_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
+  }
+
   if (input.key_pressed(SDLK_s)) p1_->ready_launch();
   if (input.key_pressed(SDLK_w)) {
-    // TODO adjustable angle
     if (p1_->launch()) launch_boulder(
         p1_->get_x() - 6,
         p1_->get_y() - 6,
-        0.2, 7 * M_PI / 4.0f);
+        0.2, 2 * M_PI - p1_->get_launch_angle());
   }
 
   if (input.key_held(SDLK_k)) {
@@ -37,13 +46,18 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     p2_->set_movement(Catapult::NONE);
   }
 
+  if (input.key_held(SDLK_i)) {
+    p2_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
+  } else if (input.key_held(SDLK_p)) {
+    p2_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
+  }
+
   if (input.key_pressed(SDLK_l)) p2_->ready_launch();
   if (input.key_pressed(SDLK_o)) {
-    // TODO adjustable angle
     if (p2_->launch()) launch_boulder(
         p2_->get_x() + 6,
         p2_->get_y() - 6,
-        0.2, 5 * M_PI / 4.0f);
+        0.2, M_PI + p2_->get_launch_angle());
   }
 
   p1_->update(audio, elapsed);
@@ -87,6 +101,13 @@ void BattleScreen::draw(Graphics& graphics) {
   for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
 
   // TODO draw UI
+  char buffer[32];
+
+  snprintf(buffer, 32, "%2.1f*", p1_->get_launch_angle() * 180 / M_PI);
+  text_->draw(graphics, buffer, 4, 468);
+
+  snprintf(buffer, 32, "%2.1f*", p2_->get_launch_angle() * 180 / M_PI);
+  text_->draw(graphics, buffer, 636, 468, Text::RIGHT);
 }
 
 Screen* BattleScreen::next_screen() {

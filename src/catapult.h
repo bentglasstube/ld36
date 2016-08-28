@@ -17,6 +17,7 @@ class Catapult {
 
     SDL_Rect hit_box();
 
+    void adjust_angle(float amount);
     void set_movement(Direction dir);
     void ready_launch();
     bool launch();
@@ -24,11 +25,13 @@ class Catapult {
     float get_x() { return x_; }
     float get_y() { return y_; }
 
+    float get_launch_angle() { return launch_angle_; }
+
   private:
 
     enum State { MOBILE, LOADING, READY, LAUNCHING };
 
-    float x_, y_;
+    float x_, y_, launch_angle_;
     Direction dir_;
     State state_;
     int wait_counter_;

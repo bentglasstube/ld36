@@ -1,12 +1,16 @@
 #include "catapult.h"
 
+#include <math.h>
+
 namespace {
   const static float _X_VELO = 0.01f;
   const static int _LOAD_TIME = 1000;
   const static int _LAUNCH_TIME = 150;
 };
 
-Catapult::Catapult(int x, int y) : x_(x), y_(y), dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0) {
+Catapult::Catapult(int x, int y) :
+  x_(x), y_(y), launch_angle_(M_PI / 4.0f),
+  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0) {
   sprites_.reset(new SpriteMap("catapult", 8, 16, 16));
 }
 
@@ -73,6 +77,14 @@ void Catapult::draw(Graphics& graphics, bool flip) {
 
 SDL_Rect Catapult::hit_box() {
   return { (int)x_ - 7, (int)y_ - 8, 14, 8 };
+}
+
+void Catapult::adjust_angle(float amount) {
+  if (state_ == Catapult::MOBILE) {
+    launch_angle_ += amount;
+    if (launch_angle_ < M_PI / 6.0f) launch_angle_ = M_PI / 6.0f;
+    if (launch_angle_ > M_PI / 3.0f) launch_angle_ = M_PI / 3.0f;
+  }
 }
 
 void Catapult::set_movement(Catapult::Direction dir) {
