@@ -16,6 +16,8 @@ class Map {
     int get_tile(int x, int y);
     int get_height(int x);
 
+    void destroy(int x, int y);
+
   private:
 
     std::unique_ptr<SpriteMap> tiles_;

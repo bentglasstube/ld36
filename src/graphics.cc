@@ -10,7 +10,7 @@ namespace {
 Graphics::Graphics() {
   int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-  window = SDL_CreateWindow("Ludum Dare", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+  window = SDL_CreateWindow("Catapults", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
   renderer = SDL_CreateRenderer(window, -1, 0);
 
   SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
@@ -59,6 +59,21 @@ void Graphics::clear() {
   SDL_RenderClear(renderer);
 }
 
+void Graphics::draw_pixel(int x, int y, float r, float g, float b, float a) {
+  set_color(r, g, b, a);
+  SDL_RenderDrawPoint(renderer, x, y);
+}
+
+void Graphics::draw_line(int x1, int y1, int x2, int y2, float r, float g, float b, float a) {
+  set_color(r, g, b, a);
+  SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
+}
+
+void Graphics::draw_rect(SDL_Rect* rect, float r, float g, float b, float a, bool filled) {
+  set_color(r, g, b, a);
+  filled ? SDL_RenderFillRect(renderer, rect) : SDL_RenderDrawRect(renderer, rect);
+}
+
 SDL_Texture* Graphics::load_image(const std::string& file) {
   const std::string path("content/" + file+ ".bmp");
   if (textures.count(path) == 0) {
@@ -70,4 +85,9 @@ SDL_Texture* Graphics::load_image(const std::string& file) {
   }
 
   return textures[path];
+}
+
+void Graphics::set_color(float r, float g, float b, float a) {
+  SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
+  SDL_SetRenderDrawColor(renderer, 255 * r, 255 * g, 255 * b, 255 * a);
 }

@@ -14,6 +14,9 @@ class Boulder {
     void update(Audio& audio, unsigned int elapsed);
     void draw(Graphics& graphics);
 
+    float get_x() { return x_; }
+    float get_y() { return y_; }
+
   private:
 
     float x_, y_, vx_, vy_;

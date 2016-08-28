@@ -9,8 +9,8 @@ void BattleScreen::init() {
 
   map_.generate_terrain();
 
-  p1_->set_y(map_.get_height(p1_->get_x()) * 8 - 8);
-  p2_->set_y(map_.get_height(p2_->get_x()) * 8 - 8);
+  p1_->set_y(map_.get_height(p1_->get_x()) - 16);
+  p2_->set_y(map_.get_height(p2_->get_x()) - 16);
 }
 
 bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
@@ -45,13 +45,22 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
   p1_->update(audio, elapsed);
   p2_->update(audio, elapsed);
 
+  // TODO adjust catapults to ground
+
   auto i = boulders_.begin();
   while (i != boulders_.end()) {
+    bool erase = false;
     (*i)->update(audio, elapsed);
 
-    // TODO collisions
+    int ground_height = map_.get_height((*i)->get_x());
+    if ((*i)->get_y() > ground_height) {
+      map_.destroy((*i)->get_x(), (*i)->get_y());
+      erase = true;
+    }
 
-    ++i;
+    // TODO collisions with players
+
+    i = erase ? boulders_.erase(i) : i + 1;
   }
 
   return true;

@@ -27,11 +27,11 @@ void Map::generate_terrain() {
 
   // smooth edges
   for (int x = 1; x < 80; ++x) {
-    int h1 = get_height(8 * x - 8);
+    int h1 = get_height(8 * x - 1);
     int h2 = get_height(8 * x);
 
-    if (h2 < h1) data_[h2 + 1][x] = 5;
-    if (h2 > h1) data_[h2][x - 1] = 6;
+    if (h2 < h1) data_[h2 / 8][x] = 5;
+    if (h2 > h1) data_[h2 / 8 - 1][x - 1] = 6;
   }
 }
 
@@ -41,6 +41,10 @@ void Map::draw(Graphics& graphics) {
       tiles_->draw(graphics, data_[y][x], x * 8, y * 8, false);
     }
   }
+
+  for (int x = 0; x < 640; ++x) {
+    graphics.draw_pixel(x, get_height(x), 1, 1, 1, 0.5f);
+  }
 }
 
 int Map::get_tile(int x, int y) {
@@ -49,9 +53,22 @@ int Map::get_tile(int x, int y) {
 
 int Map::get_height(int x) {
   const int ix = x / 8;
-  for (int y = 59; y > 0; --y) {
-    if (data_[y][ix] == 0) return y;
+  for (int y = 58; y > 0; --y) {
+    if (data_[y][ix] == 0) {
+      const int t = data_[y + 1][ix];
+      if (t == 5) return y * 8 + 15 - x % 8;
+      if (t == 6) return y * 8 + 8 + x % 8;
+      return y * 8 + 8;
+    }
   }
 
   return 0;
+}
+
+void Map::destroy(int x, int y) {
+  const int tx = x / 8;
+
+  for (int ty = y / 8; ty >= 0; --ty) {
+    data_[ty][tx] = 0;
+  }
 }
