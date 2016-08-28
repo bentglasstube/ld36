@@ -29,7 +29,7 @@ class BattleScreen : public Screen {
     std::unique_ptr<Text> text_;
 
     std::unique_ptr<Catapult> p1_, p2_;
-    std::vector<std::unique_ptr<Boulder>> boulders_;
+    std::vector<Boulder> boulders_;
     std::vector<Particle> particles_;
 
     Map map_;

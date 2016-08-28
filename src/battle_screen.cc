@@ -51,31 +51,27 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 
   // TODO adjust catapults to ground
 
-  auto i = boulders_.begin();
-  while (i != boulders_.end()) {
+  auto boulder = boulders_.begin();
+  while (boulder != boulders_.end()) {
     bool erase = false;
-    (*i)->update(audio, elapsed);
+    (*boulder).update(audio, elapsed);
 
-    const Boulder* boulder = (*i).get();
-
-    int ground_height = map_.get_height(boulder->get_x());
-    if (boulder->get_y() > ground_height) {
-      map_.destroy(boulder->get_x(), boulder->get_y());
+    int ground_height = map_.get_height((*boulder).get_x());
+    if ((*boulder).get_y() > ground_height) {
+      map_.destroy((*boulder).get_x(), (*boulder).get_y());
+      add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 50);
       erase = true;
-
-      add_dirt_particles(boulder->get_x(), boulder->get_y(), 50);
     }
 
     // TODO collisions with players
 
-    i = erase ? boulders_.erase(i) : i + 1;
+    boulder = erase ? boulders_.erase(boulder) : boulder + 1;
   }
 
-  auto j = particles_.begin();
-  while (j != particles_.end()) {
-    (*j).update(elapsed);
-    j = (*j).done() ? particles_.erase(j) : ++j;
-    // ++j;
+  auto particle = particles_.begin();
+  while (particle != particles_.end()) {
+    (*particle).update(elapsed);
+    particle = (*particle).done() ? particles_.erase(particle) : ++particle;
   }
 
   return true;
@@ -87,13 +83,8 @@ void BattleScreen::draw(Graphics& graphics) {
   p1_->draw(graphics, false);
   p2_->draw(graphics, true);
 
-  for (auto i = boulders_.begin(); i != boulders_.end(); ++i) {
-    (*i)->draw(graphics);
-  }
-
-  for (auto i = particles_.begin(); i != particles_.end(); ++i) {
-    (*i).draw(graphics);
-  }
+  for (auto i = boulders_.begin(); i != boulders_.end(); ++i) (*i).draw(graphics);
+  for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
 
   // TODO draw UI
 }
@@ -103,7 +94,7 @@ Screen* BattleScreen::next_screen() {
 }
 
 void BattleScreen::launch_boulder(int x, int y, float v, float angle) {
-  boulders_.push_back(std::unique_ptr<Boulder>(new Boulder(x, y, v * cosf(angle), v * sinf(angle))));
+  boulders_.push_back(Boulder(x, y, v * cosf(angle), v * sinf(angle)));
 }
 
 void BattleScreen::add_dirt_particles(int x, int y, int n) {
