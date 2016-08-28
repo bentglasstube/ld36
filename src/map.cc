@@ -25,13 +25,16 @@ void Map::generate_terrain() {
     }
   }
 
-  // smooth edges
+  smooth_terrain();
+}
+
+void Map::smooth_terrain() {
   for (int x = 1; x < 160; ++x) {
     int h1 = get_height(4 * x - 1);
     int h2 = get_height(4 * x);
 
-    if (h2 < h1) data_[h2 / 4][x] = 5;
-    if (h2 > h1) data_[h2 / 4 - 1][x - 1] = 6;
+    if (h1 < h2) data_[h1 / 4][x - 1] = 6;
+    if (h1 > h2) data_[h2 / 4][x] = 5;
   }
 }
 
@@ -61,10 +64,7 @@ int Map::get_height(int x) const {
   return 0;
 }
 
-void Map::destroy(int x, int y) {
-  const int tx = x / 4;
-
-  for (int ty = y / 4; ty >= 0; --ty) {
-    data_[ty][tx] = 0;
-  }
+void Map::destroy(int x) {
+  data_[get_height(x) / 4][x / 4] = 0;
+  smooth_terrain();
 }

@@ -97,7 +97,7 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 
       erase = true;
     } else if ((*boulder).get_y() > ground_height) {
-      map_.destroy((*boulder).get_x(), (*boulder).get_y());
+      map_.destroy((*boulder).get_x());
       add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 50);
 
       audio.play_sample("thud");
