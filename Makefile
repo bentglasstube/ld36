@@ -4,7 +4,7 @@ SOURCES=$(wildcard src/*.cc)
 CONTENT=$(wildcard content/*)
 BUILDDIR=build
 OBJECTS=$(patsubst %.cc,$(BUILDDIR)/%.o,$(SOURCES))
-NAME=base
+NAME=catapults
 APP_NAME="Catapults"
 
 CC=clang++

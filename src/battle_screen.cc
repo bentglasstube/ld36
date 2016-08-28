@@ -154,6 +154,9 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 }
 
 void BattleScreen::draw(Graphics& graphics) {
+  SDL_Rect full = { 0, 0, 640, 360 };
+  graphics.draw_rect(&full, 0x31a2f2ff, true);
+
   map_.draw(graphics);
 
   p1_->draw(graphics, false);
@@ -165,22 +168,22 @@ void BattleScreen::draw(Graphics& graphics) {
   char buffer[32];
 
   snprintf(buffer, 32, "%2.0f*", p1_->get_launch_angle() * 180 / M_PI);
-  text_->draw(graphics, buffer, 4, 468);
+  text_->draw(graphics, buffer, 4, 340);
 
   snprintf(buffer, 32, "%2.0f*", p2_->get_launch_angle() * 180 / M_PI);
-  text_->draw(graphics, buffer, 636, 468, Text::RIGHT);
+  text_->draw(graphics, buffer, 636, 340, Text::RIGHT);
 
   if (state_ == COUNTDOWN) {
     snprintf(buffer, 32, "%d", counter_ / 500 + 1);
-    text_->draw(graphics, buffer, 320, 200, Text::CENTER);
+    text_->draw(graphics, buffer, 320, 100, Text::CENTER);
   } else if (state_ == WINNER) {
     int p = p1_->is_dead() ? 2 : 1;
     snprintf(buffer, 32, "Player %d scores!", p);
-    text_->draw(graphics, buffer, 320, 200, Text::CENTER);
+    text_->draw(graphics, buffer, 320, 100, Text::CENTER);
   }
 
   snprintf(buffer, 32, "%d : %d", p1score_, p2score_);
-  text_->draw(graphics, buffer, 320, 460, Text::CENTER);
+  text_->draw(graphics, buffer, 320, 340, Text::CENTER);
 }
 
 Screen* BattleScreen::next_screen() {
