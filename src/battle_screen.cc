@@ -154,9 +154,6 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
 }
 
 void BattleScreen::draw(Graphics& graphics) {
-  SDL_Rect full = { 0, 0, 640, 360 };
-  graphics.draw_rect(&full, 0x31a2f2ff, true);
-
   map_.draw(graphics);
 
   p1_->draw(graphics, false);
