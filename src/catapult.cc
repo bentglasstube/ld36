@@ -11,11 +11,13 @@ namespace {
 
 Catapult::Catapult(int x, int y) :
   x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
-  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0) {
+  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0), dead_(false) {
   sprites_.reset(new SpriteMap("catapult", 6, 16, 16));
 }
 
 void Catapult::update(const Map& map, const unsigned int elapsed) {
+  if (dead_) return;
+
   if (wait_counter_ > 0) {
     wait_counter_ -= elapsed;
 
@@ -63,6 +65,8 @@ void Catapult::update(const Map& map, const unsigned int elapsed) {
 }
 
 void Catapult::draw(Graphics& graphics, bool flip) const {
+  if (dead_) return;
+
   int tile = 0;
 
   switch (state_) {
@@ -84,9 +88,6 @@ void Catapult::draw(Graphics& graphics, bool flip) const {
   }
 
   sprites_->draw_ex(graphics, tile, x_ - 8, y_ - 16, flip, angle_, 8, 16);
-
-  SDL_Rect b = hit_box();
-  graphics.draw_rect(&b, 1, 0, 0, 0.5f, false);
 }
 
 SDL_Rect Catapult::hit_box() const {

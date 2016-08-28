@@ -23,12 +23,13 @@ class Catapult {
     void set_movement(Direction dir);
     bool ready_launch();
     bool launch();
+    void destroy() { dead_ = true; }
 
     float get_x() const { return x_; }
     float get_y() const { return y_; }
-
     float get_angle() const { return angle_; }
     float get_launch_angle() const { return launch_angle_; }
+    bool is_dead() const { return dead_; }
 
   private:
 
@@ -38,5 +39,6 @@ class Catapult {
     Direction dir_;
     State state_;
     int wait_counter_;
+    bool dead_;
     std::unique_ptr<SpriteMap> sprites_;
 };

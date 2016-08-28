@@ -14,12 +14,11 @@ class Map {
     void smooth_terrain();
     void draw(Graphics& graphics) const;
 
-    int get_height(int x) const;
+    int get_height(int x) const { return heights_[x]; }
 
-    void destroy(int x);
+    void impact(int x);
 
   private:
 
-    std::unique_ptr<SpriteMap> tiles_;
-    int data_[120][160];
+    int heights_[640];
 };

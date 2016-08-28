@@ -7,12 +7,11 @@
 #include "audio.h"
 #include "input.h"
 #include "text.h"
-#include "title_screen.h"
+#include "battle_screen.h"
 
 namespace {
-  const bool SHOW_FPS = true;
-  const unsigned int FPS = 60;
-  const unsigned int MSPF = 1000 / FPS;
+  // const unsigned int FPS = 60;
+  // const unsigned int MSPF = 1000 / FPS;
 }
 
 Game::Game() {
@@ -33,11 +32,11 @@ void Game::loop() {
 
   unsigned int last_update = SDL_GetTicks();
 
-  screen.reset(new TitleScreen());
+  screen.reset(new BattleScreen());
   screen->init();
 
   while (true) {
-    const unsigned int start = SDL_GetTicks();
+    // const unsigned int start = SDL_GetTicks();
 
     if (!audio.music_playing()) audio.play_music(screen->get_music_track());
     if (!screen->process_input(input)) return;
@@ -48,14 +47,6 @@ void Game::loop() {
 
       graphics.clear();
       screen->draw(graphics);
-
-      if (SHOW_FPS) {
-        const float fps = 1000.0f / frame_ticks;
-        char buffer[32];
-        snprintf(buffer, 32, "%.1f", fps);
-        text.draw(graphics, buffer, 636, 4, Text::RIGHT);
-      }
-
       graphics.flip();
 
     } else {
@@ -69,7 +60,7 @@ void Game::loop() {
 
     last_update = update;
 
-    const unsigned int elapsed = SDL_GetTicks() - start;
-    if (MSPF > elapsed) SDL_Delay(MSPF - elapsed);
+    // const unsigned int elapsed = SDL_GetTicks() - start;
+    // if (MSPF > elapsed) SDL_Delay(MSPF - elapsed);
   }
 }

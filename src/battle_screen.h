@@ -26,6 +26,11 @@ class BattleScreen : public Screen {
 
   private:
 
+    enum GameState { COUNTDOWN, FIGHT, WINNER };
+
+    GameState state_;
+    int p1score_, p2score_;
+    int counter_;
     std::unique_ptr<Text> text_;
 
     std::unique_ptr<Catapult> p1_, p2_;
@@ -38,4 +43,5 @@ class BattleScreen : public Screen {
 
     void add_dirt_particles(int x, int y, int n);
     void add_smoke_particles(int x, int y, int n);
+    void reset_game();
 };
