@@ -1,7 +1,7 @@
 #include "map.h"
 
 Map::Map() {
-  tiles_.reset(new SpriteMap("tiles", 32, 4, 4));
+  tiles_.reset(new SpriteMap("tiles", 8, 4, 4));
 
   for (int y = 0; y < 120; ++y) {
     for (int x = 0; x < 160; ++x) {

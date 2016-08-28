@@ -12,7 +12,7 @@ namespace {
 Catapult::Catapult(int x, int y) :
   x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
   dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0) {
-  sprites_.reset(new SpriteMap("catapult", 8, 16, 16));
+  sprites_.reset(new SpriteMap("catapult", 6, 16, 16));
 }
 
 void Catapult::update(const Map& map, const unsigned int elapsed) {
