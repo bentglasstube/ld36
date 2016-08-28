@@ -213,4 +213,7 @@ void BattleScreen::reset_game() {
   p1_.reset(new Catapult(48, map_.get_height(48)));
   p2_.reset(new Catapult(592, map_.get_height(592)));
   boulders_.clear();
+
+  p1_->update(map_, 0);
+  p2_->update(map_, 0);
 }
