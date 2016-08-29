@@ -112,6 +112,8 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
             audio.play_sample("thud");
 
             erase = true;
+          } else if ((*boulder).get_x() < 0 || (*boulder).get_x() > 640) {
+            erase = true;
           }
 
           boulder = erase ? boulders_.erase(boulder) : boulder + 1;
