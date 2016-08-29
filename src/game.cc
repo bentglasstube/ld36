@@ -7,7 +7,7 @@
 #include "audio.h"
 #include "input.h"
 #include "text.h"
-#include "battle_screen.h"
+#include "title_screen.h"
 
 namespace {
   // const unsigned int FPS = 60;
@@ -32,7 +32,7 @@ void Game::loop() {
 
   unsigned int last_update = SDL_GetTicks();
 
-  screen.reset(new BattleScreen());
+  screen.reset(new TitleScreen());
   screen->init();
 
   while (true) {

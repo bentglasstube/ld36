@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "audio.h"
+#include "backdrop.h"
 #include "graphics.h"
 #include "input.h"
 #include "screen.h"
@@ -21,4 +22,5 @@ class TitleScreen : public Screen {
   private:
 
     std::unique_ptr<Text> text_;
+    std::unique_ptr<Backdrop> backdrop_;
 };
