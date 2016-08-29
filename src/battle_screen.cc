@@ -63,23 +63,23 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
         }
       }
 
-      if (input.key_held(SDLK_k)) {
+      if (input.key_held(SDLK_j)) {
         p2_->set_movement(Catapult::LEFT);
-      } else if (input.key_held(SDLK_SEMICOLON)) {
+      } else if (input.key_held(SDLK_l)) {
         p2_->set_movement(Catapult::RIGHT);
       } else {
         p2_->set_movement(Catapult::NONE);
       }
 
-      if (input.key_held(SDLK_i)) {
+      if (input.key_held(SDLK_u)) {
         p2_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
-      } else if (input.key_held(SDLK_p)) {
+      } else if (input.key_held(SDLK_o)) {
         p2_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
       }
 
-      if (input.key_pressed(SDLK_l)) {
+      if (input.key_pressed(SDLK_k)) {
         if (p2_->ready_launch()) audio.play_sample("ready");
-      } else if (input.key_pressed(SDLK_o)) {
+      } else if (input.key_pressed(SDLK_i)) {
         if (p2_->launch()) {
           audio.play_sample("launch");
           launch_boulder(
