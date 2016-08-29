@@ -25,6 +25,7 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
     particle = (*particle).done() ? particles_.erase(particle) : ++particle;
   }
 
+  clouds_.update(elapsed);
   counter_ -= elapsed;
 
   switch (state_) {
@@ -164,6 +165,8 @@ void BattleScreen::draw(Graphics& graphics) {
   for (auto i = boulders_.begin(); i != boulders_.end(); ++i) (*i).draw(graphics);
   for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
 
+  clouds_.draw(graphics);
+
   char buffer[32];
 
   snprintf(buffer, 32, "%2.0f*", p1_->get_launch_angle() * 180 / M_PI);
@@ -209,6 +212,7 @@ void BattleScreen::add_smoke_particles(int x, int y, int n) {
 
 void BattleScreen::reset_game() {
   map_.generate_terrain();
+  clouds_.randomize();
   p1_.reset(new Catapult(48, map_.get_height(48)));
   p2_.reset(new Catapult(592, map_.get_height(592)));
   boulders_.clear();

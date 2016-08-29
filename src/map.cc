@@ -30,8 +30,6 @@ void Map::draw(Graphics& graphics) const {
     graphics.draw_pixel(x, heights_[x], 0x44891aff);
     graphics.draw_line(x, heights_[x] + 1, x, 360, 0xa46422ff);
   }
-
-  // TODO draw clouds
 }
 
 void Map::impact(int x) {

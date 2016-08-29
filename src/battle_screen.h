@@ -6,6 +6,7 @@
 #include "audio.h"
 #include "boulder.h"
 #include "catapult.h"
+#include "clouds.h"
 #include "graphics.h"
 #include "input.h"
 #include "map.h"
@@ -38,6 +39,7 @@ class BattleScreen : public Screen {
     std::vector<Particle> particles_;
 
     Map map_;
+    Clouds clouds_;
 
     void launch_boulder(int x, int y, float v, float angle);
 
