@@ -7,7 +7,7 @@
 
 namespace {
   const static float SMOOTHNESS = 48.0f;
-  const static int AMPLITUDE = 32;
+  const static int AMPLITUDE = 50;
 };
 
 Map::Map() {
