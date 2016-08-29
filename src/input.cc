@@ -6,11 +6,11 @@ void Input::begin_frame() {
 }
 
 void Input::key_down(const SDL_Event& event) {
-  pressed[event.key.keysym.sym] = true;
-  held[event.key.keysym.sym] = true;
+  pressed[event.key.keysym.scancode] = true;
+  held[event.key.keysym.scancode] = true;
 }
 
 void Input::key_up(const SDL_Event& event) {
-  released[event.key.keysym.sym] = true;
-  held[event.key.keysym.sym] = false;
+  released[event.key.keysym.scancode] = true;
+  held[event.key.keysym.scancode] = false;
 }

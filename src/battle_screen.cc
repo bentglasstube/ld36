@@ -37,23 +37,23 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
       break;
 
     case FIGHT:
-      if (input.key_held(SDLK_a)) {
+      if (input.key_held(SDL_SCANCODE_A)) {
         p1_->set_movement(Catapult::LEFT);
-      } else if (input.key_held(SDLK_d)) {
+      } else if (input.key_held(SDL_SCANCODE_D)) {
         p1_->set_movement(Catapult::RIGHT);
       } else {
         p1_->set_movement(Catapult::NONE);
       }
 
-      if (input.key_held(SDLK_q)) {
+      if (input.key_held(SDL_SCANCODE_Q)) {
         p1_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
-      } else if (input.key_held(SDLK_e)) {
+      } else if (input.key_held(SDL_SCANCODE_E)) {
         p1_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
       }
 
-      if (input.key_pressed(SDLK_s)) {
+      if (input.key_pressed(SDL_SCANCODE_S)) {
         if (p1_->ready_launch()) audio.play_sample("ready");
-      } else if (input.key_pressed(SDLK_w)) {
+      } else if (input.key_pressed(SDL_SCANCODE_W)) {
         if (p1_->launch()) {
           audio.play_sample("launch");
           launch_boulder(
@@ -63,23 +63,23 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
         }
       }
 
-      if (input.key_held(SDLK_j)) {
+      if (input.key_held(SDL_SCANCODE_J)) {
         p2_->set_movement(Catapult::LEFT);
-      } else if (input.key_held(SDLK_l)) {
+      } else if (input.key_held(SDL_SCANCODE_L)) {
         p2_->set_movement(Catapult::RIGHT);
       } else {
         p2_->set_movement(Catapult::NONE);
       }
 
-      if (input.key_held(SDLK_u)) {
+      if (input.key_held(SDL_SCANCODE_U)) {
         p2_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
-      } else if (input.key_held(SDLK_o)) {
+      } else if (input.key_held(SDL_SCANCODE_O)) {
         p2_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
       }
 
-      if (input.key_pressed(SDLK_k)) {
+      if (input.key_pressed(SDL_SCANCODE_K)) {
         if (p2_->ready_launch()) audio.play_sample("ready");
-      } else if (input.key_pressed(SDLK_i)) {
+      } else if (input.key_pressed(SDL_SCANCODE_I)) {
         if (p2_->launch()) {
           audio.play_sample("launch");
           launch_boulder(
@@ -153,7 +153,7 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
       break;
   }
 
-  return !input.key_pressed(SDLK_ESCAPE);
+  return !input.key_pressed(SDL_SCANCODE_ESCAPE);
 }
 
 void BattleScreen::draw(Graphics& graphics) {
