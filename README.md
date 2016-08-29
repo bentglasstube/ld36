@@ -1,3 +1,3 @@
-# SDL Base
+# Ludum Dare 36 - Catapults
 
-My base code for Ludum Dare games made with SDL.
+An artillery game with catapults.
