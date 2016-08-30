@@ -10,7 +10,6 @@ class Map {
     Map();
 
     void generate_terrain();
-    void smooth_terrain();
     void draw(Graphics& graphics) const;
 
     int get_height(int x) const { return heights_[x]; }

@@ -9,11 +9,6 @@
 #include "text.h"
 #include "title_screen.h"
 
-namespace {
-  // const unsigned int FPS = 60;
-  // const unsigned int MSPF = 1000 / FPS;
-}
-
 Game::Game() {
   srand(static_cast<unsigned int>(time(NULL)));
   SDL_Init(SDL_INIT_EVERYTHING);
@@ -36,8 +31,6 @@ void Game::loop() {
   screen_->init();
 
   while (true) {
-    // const unsigned int start = SDL_GetTicks();
-
     if (!audio.music_playing()) audio.play_music(screen_->get_music_track());
     if (!screen_->process_input(input)) return;
 
@@ -59,8 +52,5 @@ void Game::loop() {
     }
 
     last_update = update;
-
-    // const unsigned int elapsed = SDL_GetTicks() - start;
-    // if (MSPF > elapsed) SDL_Delay(MSPF - elapsed);
   }
 }

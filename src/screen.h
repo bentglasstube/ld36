@@ -17,8 +17,4 @@ class Screen {
     virtual std::string get_music_track() const { return ""; }
 
     bool process_input(Input& input);
-
-  protected:
-
-    virtual void lost_focus() {}
 };
