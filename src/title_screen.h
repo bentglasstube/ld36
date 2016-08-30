@@ -17,7 +17,6 @@ class TitleScreen : public Screen {
     void draw(Graphics& graphics);
 
     Screen* next_screen();
-    std::string get_music_track() { return ""; }
 
   private:
 
