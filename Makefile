@@ -7,8 +7,8 @@ OBJECTS=$(patsubst %.cc,$(BUILDDIR)/%.o,$(SOURCES))
 NAME=catapults
 APP_NAME="Catapults"
 
-CC=clang++
-CFLAGS=-O3 --std=c++14 -Wall -Wextra -Werror -pedantic
+CC=g++
+CFLAGS=-O3 --std=c++11 -Wall -Wextra -Werror -pedantic
 
 ifeq ($(UNAME), Linux)
 	PACKAGE=$(NAME)-linux.tgz
