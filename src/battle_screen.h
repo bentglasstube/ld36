@@ -12,7 +12,6 @@
 #include "map.h"
 #include "particle.h"
 #include "screen.h"
-#include "spritemap.h"
 #include "text.h"
 
 class BattleScreen : public Screen {

@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "graphics.h"
-#include "spritemap.h"
 
 class Map {
   public:
