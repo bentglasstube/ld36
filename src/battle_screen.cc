@@ -193,20 +193,20 @@ Screen* BattleScreen::next_screen() {
 }
 
 void BattleScreen::launch_boulder(int x, int y, float v, float angle) {
-  boulders_.push_back(Boulder(x, y, v * cosf(angle), v * sinf(angle)));
+  boulders_.emplace_back(x, y, v * cosf(angle), v * sinf(angle));
 }
 
 void BattleScreen::add_dirt_particles(int x, int y, int n) {
   for (int i = 0; i < n; ++i) {
     const float a = randf(M_PI, 2 * M_PI);
     const float v = randf(0, 0.2);
-    particles_.push_back(Particle(x, y, v * cosf(a), v * sinf(a), 0.001f, 0xa46422ff, 400));
+    particles_.emplace_back(x, y, v * cosf(a), v * sinf(a), 0.001f, 0xa46422ff, 400);
   }
 }
 
 void BattleScreen::add_smoke_particles(int x, int y, int n) {
   for (int i = 0; i < n; ++i) {
-    particles_.push_back(Particle(x + randf(-3, 3), y + randf(-3, 3), randf(-0.02, 0.02), randf(-0.06, 0), 0, 0xffffffff, randf(400, 600)));
+    particles_.emplace_back(x + randf(-3, 3), y + randf(-3, 3), randf(-0.02, 0.02), randf(-0.06, 0), 0, 0xffffffff, randf(400, 600));
   }
 }
 
