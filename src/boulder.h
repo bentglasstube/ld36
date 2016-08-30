@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "graphics.h"
-#include "sprite.h"
 
 class Boulder {
   public:
@@ -19,5 +18,4 @@ class Boulder {
   private:
 
     float x_, y_, vx_, vy_;
-    std::unique_ptr<Sprite> sprite_;
 };
