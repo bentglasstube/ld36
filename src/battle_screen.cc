@@ -18,7 +18,7 @@ void BattleScreen::init() {
   reset_game();
 }
 
-bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int elapsed) {
+bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
   auto particle = particles_.begin();
   while (particle != particles_.end()) {
     (*particle).update(elapsed);

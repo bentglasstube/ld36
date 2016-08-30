@@ -7,7 +7,7 @@ void TitleScreen::init() {
   backdrop_.reset(new Backdrop("title"));
 }
 
-bool TitleScreen::update(Input& input, Audio&, Graphics&, unsigned int) {
+bool TitleScreen::update(Input& input, Audio&, unsigned int) {
   return !input.any_pressed();
 }
 

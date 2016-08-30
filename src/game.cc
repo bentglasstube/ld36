@@ -43,7 +43,7 @@ void Game::loop() {
 
     const unsigned int update = SDL_GetTicks();
     const unsigned int frame_ticks = update - last_update;
-    if (screen_->update(input, audio, graphics, frame_ticks)) {
+    if (screen_->update(input, audio, frame_ticks)) {
 
       graphics.clear();
       screen_->draw(graphics);

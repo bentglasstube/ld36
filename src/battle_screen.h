@@ -18,7 +18,7 @@ class BattleScreen : public Screen {
   public:
 
     void init();
-    bool update(Input& input, Audio& audio, Graphics& graphics, unsigned int elapsed);
+    bool update(Input& input, Audio& audio, unsigned int elapsed);
     void draw(Graphics& graphics);
 
     Screen* next_screen();
