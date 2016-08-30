@@ -8,7 +8,7 @@
 namespace {
   const static float SMOOTHNESS = 48.0f;
   const static int AMPLITUDE = 50;
-};
+}
 
 Map::Map() {
   for (int x = 0; x < 640; ++x) {

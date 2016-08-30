@@ -7,7 +7,7 @@ namespace {
   const static float _Y_VELO = 0.1f;
   const static int _LOAD_TIME = 1000;
   const static int _LAUNCH_TIME = 150;
-};
+}
 
 Catapult::Catapult(int x, int y) :
   x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
