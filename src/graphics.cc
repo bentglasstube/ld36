@@ -73,7 +73,7 @@ void Graphics::draw_line(int x1, int y1, int x2, int y2, int color) {
   SDL_RenderDrawLine(renderer, x1, y1, x2, y2);
 }
 
-void Graphics::draw_rect(SDL_Rect* rect, int color, bool filled) {
+void Graphics::draw_rect(const SDL_Rect* rect, int color, bool filled) {
   set_color(color);
   filled ? SDL_RenderFillRect(renderer, rect) : SDL_RenderDrawRect(renderer, rect);
 }
