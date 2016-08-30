@@ -95,7 +95,7 @@ bool BattleScreen::update(Input& input, Audio& audio, Graphics&, unsigned int el
       {
         auto boulder = boulders_.begin();
         while (boulder != boulders_.end()) {
-          (*boulder).update(audio, elapsed);
+          (*boulder).update(elapsed);
 
           bool erase = false;
           int ground_height = map_.get_height((*boulder).get_x());

@@ -8,7 +8,7 @@ Boulder::Boulder(int x, int y, float vx, float vy) : x_(x), y_(y), vx_(vx), vy_(
   sprite_.reset(new Sprite("catapult", 65, 9, 2, 2));
 }
 
-void Boulder::update(Audio&, unsigned int elapsed) {
+void Boulder::update(unsigned int elapsed) {
   x_ += elapsed * vx_;
   y_ += elapsed * vy_;
   vy_ += elapsed * GRAVITY;

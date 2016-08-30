@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include "audio.h"
 #include "graphics.h"
 #include "sprite.h"
 
@@ -11,7 +10,7 @@ class Boulder {
 
     Boulder(int x, int y, float vx, float vy);
 
-    void update(Audio& audio, unsigned int elapsed);
+    void update(unsigned int elapsed);
     void draw(Graphics& graphics) const;
 
     float get_x() const { return x_; }
