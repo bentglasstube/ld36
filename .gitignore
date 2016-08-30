@@ -6,3 +6,4 @@ build
 /*.glc
 /*.mkv
 /*.wav
+/bazel-*
