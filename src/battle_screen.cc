@@ -47,37 +47,22 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
       break;
 
     case FIGHT:
-      if (p1_->update(input, map_, elapsed)) {
-        switch (p1_->get_state()) {
+      for (auto player = players_.begin(); player != players_.end(); ++player) {
+        if ((*player).update(input, map_, elapsed)) {
+          switch ((*player).get_state()) {
 
-          case Catapult::LOADING:
-            audio.play_sample("ready");
-            break;
+            case Catapult::LOADING:
+              audio.play_sample("ready");
+              break;
 
-          case Catapult::LAUNCHING:
-            audio.play_sample("launch");
-            launch_boulder(p1_->launch_x(), p1_->launch_y(), p1_->launch_angle());
-            break;
+            case Catapult::LAUNCHING:
+              audio.play_sample("launch");
+              launch_boulder((*player).launch_x(), (*player).launch_y(), (*player).launch_angle());
+              break;
 
-          default:
-            break;
-        }
-      }
-
-      if (p2_->update(input, map_, elapsed)) {
-        switch (p2_->get_state()) {
-
-          case Catapult::LOADING:
-            audio.play_sample("ready");
-            break;
-
-          case Catapult::LAUNCHING:
-            audio.play_sample("launch");
-            launch_boulder(p2_->launch_x(), p2_->launch_y(), p2_->launch_angle());
-            break;
-
-          default:
-            break;
+            default:
+              break;
+          }
         }
       }
 
@@ -89,20 +74,23 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
           bool erase = false;
           int ground_height = map_.get_height((*boulder).get_x());
 
-          if (p1_->point_within((*boulder).get_x(), (*boulder).get_y())) {
-            p1_->destroy();
+          if ((*boulder).get_x() < 0 || (*boulder).get_x() > 640) {
             erase = true;
-          } else if (p2_->point_within((*boulder).get_x(), (*boulder).get_y())) {
-            p2_->destroy();
-            erase = true;
-          } else if ((*boulder).get_y() > ground_height) {
+          } else {
+            for (auto player = players_.begin(); player != players_.end(); ++player) {
+              if ((*player).point_within((*boulder).get_x(), (*boulder).get_y())) {
+                (*player).destroy();
+                erase = true;
+              }
+            }
+          }
+
+          if ((*boulder).get_y() > ground_height) {
             map_.impact((*boulder).get_x());
             add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 50);
 
             audio.play_sample("thud");
 
-            erase = true;
-          } else if ((*boulder).get_x() < 0 || (*boulder).get_x() > 640) {
             erase = true;
           }
 
@@ -110,25 +98,20 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
         }
       }
 
-      if (p1_->is_dead()) {
-        add_dirt_particles(p1_->get_x(), p1_->get_y(), 500);
-        add_smoke_particles(p1_->get_x(), p1_->get_y(), 100);
-        audio.play_sample("explode");
+      for (auto player = players_.begin(); player != players_.end(); ++player) {
+        if ((*player).is_dead()) {
+          add_dirt_particles((*player).get_x(), (*player).get_y(), 500);
+          add_smoke_particles((*player).get_x(), (*player).get_y(), 100);
+          audio.play_sample("explode");
 
-        state_ = WINNER;
-        counter_ = 5000;
-        p2score_++;
+          state_ = WINNER;
+          counter_ = 5000;
+        }
       }
 
-      if (p2_->is_dead()) {
-        add_dirt_particles(p2_->get_x(), p2_->get_y(), 500);
-        add_smoke_particles(p2_->get_x(), p2_->get_y(), 100);
-        audio.play_sample("explode");
-
-        state_ = WINNER;
-        counter_ = 5000;
-        p1score_++;
-      }
+      // TODO find a better way to do this
+      if (players_[0].is_dead()) p2score_++;
+      if (players_[1].is_dead()) p1score_++;
 
       break;
 
@@ -148,9 +131,7 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
 void BattleScreen::draw(Graphics& graphics) const {
   map_.draw(graphics);
 
-  p1_->draw(graphics);
-  p2_->draw(graphics);
-
+  for (auto i = players_.begin(); i != players_.end(); ++i) (*i).draw(graphics);
   for (auto i = boulders_.begin(); i != boulders_.end(); ++i) (*i).draw(graphics);
   for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
 
@@ -158,17 +139,17 @@ void BattleScreen::draw(Graphics& graphics) const {
 
   char buffer[32];
 
-  snprintf(buffer, 32, "%2.0f*", p1_->get_launch_angle() * 180 / M_PI);
+  snprintf(buffer, 32, "%2.0f*", players_[0].get_launch_angle() * 180 / M_PI);
   text_->draw(graphics, buffer, 4, 340);
 
-  snprintf(buffer, 32, "%2.0f*", p2_->get_launch_angle() * 180 / M_PI);
+  snprintf(buffer, 32, "%2.0f*", players_[1].get_launch_angle() * 180 / M_PI);
   text_->draw(graphics, buffer, 636, 340, Text::RIGHT);
 
   if (state_ == COUNTDOWN) {
     snprintf(buffer, 32, "%d", counter_ / 500 + 1);
     text_->draw(graphics, buffer, 320, 100, Text::CENTER);
   } else if (state_ == WINNER) {
-    int p = p1_->is_dead() ? 2 : 1;
+    int p = players_[0].is_dead() ? 2 : 1;
     snprintf(buffer, 32, "Player %d scores!", p);
     text_->draw(graphics, buffer, 320, 100, Text::CENTER);
   }
@@ -202,10 +183,11 @@ void BattleScreen::add_smoke_particles(int x, int y, int n) {
 void BattleScreen::reset_game() {
   map_.generate_terrain();
   clouds_.randomize();
-  p1_.reset(new Catapult(48, map_.get_height(48), false, P1_KEYS));
-  p2_.reset(new Catapult(592, map_.get_height(592), true, P2_KEYS));
   boulders_.clear();
 
-  p1_->settle(map_);
-  p2_->settle(map_);
+  players_.clear();
+  players_.emplace_back(48, map_.get_height(48), false, P1_KEYS);
+  players_.emplace_back(592, map_.get_height(592), true, P2_KEYS);
+
+  for (auto player = players_.begin(); player != players_.end(); ++player) (*player).settle(map_);
 }

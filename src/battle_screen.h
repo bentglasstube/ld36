@@ -32,7 +32,7 @@ class BattleScreen : public Screen {
     int counter_;
     std::unique_ptr<Text> text_;
 
-    std::unique_ptr<Catapult> p1_, p2_;
+    std::vector<Catapult> players_;
     std::vector<Boulder> boulders_;
     std::vector<Particle> particles_;
 
