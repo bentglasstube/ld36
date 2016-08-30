@@ -11,7 +11,7 @@ class Text {
 
     Text(const std::string& file, const int width = 8);
 
-    void draw(Graphics& graphics, const std::string& text, int x, int y, Alignment alignment=LEFT);
+    void draw(Graphics& graphics, const std::string& text, int x, int y, Alignment alignment=LEFT) const;
 
   private:
 

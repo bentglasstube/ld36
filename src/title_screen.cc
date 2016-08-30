@@ -11,7 +11,7 @@ bool TitleScreen::update(Input& input, Audio&, unsigned int) {
   return !input.any_pressed();
 }
 
-void TitleScreen::draw(Graphics& graphics) {
+void TitleScreen::draw(Graphics& graphics) const {
   backdrop_->draw(graphics);
   text_->draw(graphics, "Press any key", 320, 340, Text::CENTER);
 

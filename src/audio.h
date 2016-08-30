@@ -22,7 +22,7 @@ class Audio {
     void play_music(const std::string& name);
     void stop_music() { Mix_FadeOutMusic(FADE_TIME); }
     void music_volume(int volume) { Mix_VolumeMusic(MIX_MAX_VOLUME * volume / 10); }
-    bool music_playing() { return Mix_PlayingMusic() == 1; }
+    bool music_playing() const { return Mix_PlayingMusic() == 1; }
 
   private:
 

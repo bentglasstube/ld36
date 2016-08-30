@@ -4,7 +4,7 @@
 
 Text::Text(const std::string& file, int width) : file_(file), width_(width) {}
 
-void Text::draw(Graphics& graphics, const std::string& text, int x, int y, Text::Alignment alignment) {
+void Text::draw(Graphics& graphics, const std::string& text, int x, int y, Text::Alignment alignment) const {
   SDL_Rect source = { 0, 0, width_, width_ * 2};
   SDL_Rect dest = { x, y, width_, width_ * 2 };
 

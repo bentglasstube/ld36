@@ -10,7 +10,7 @@ class Backdrop {
 
     Backdrop(const std::string& file);
 
-    void draw(Graphics& graphics);
+    void draw(Graphics& graphics) const;
     virtual void update() {}
 
   private:

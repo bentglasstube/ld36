@@ -156,7 +156,7 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
   return !input.key_pressed(SDL_SCANCODE_ESCAPE);
 }
 
-void BattleScreen::draw(Graphics& graphics) {
+void BattleScreen::draw(Graphics& graphics) const {
   map_.draw(graphics);
 
   p1_->draw(graphics, false);

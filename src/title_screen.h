@@ -14,7 +14,7 @@ class TitleScreen : public Screen {
 
     void init();
     bool update(Input& input, Audio& audio, unsigned int elapsed);
-    void draw(Graphics& graphics);
+    void draw(Graphics& graphics) const;
 
     Screen* next_screen();
 
