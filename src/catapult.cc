@@ -7,16 +7,37 @@ namespace {
   const static float _Y_VELO = 0.1f;
   const static int _LOAD_TIME = 1000;
   const static int _LAUNCH_TIME = 150;
+  const static float ANGLE_ADJUST_RATE = 0.0001f;
 }
 
-Catapult::Catapult(int x, int y) :
+Catapult::Catapult(int x, int y, bool flipped, const SDL_Scancode *inputs) :
   x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
-  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0), dead_(false) {
+  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0), dead_(false), flipped_(flipped) {
   sprites_.reset(new SpriteMap("catapult", 6, 16, 16));
+  for (int i = 0; i < 6; ++i) inputs_[i] = inputs[i];
 }
 
-void Catapult::update(const Map& map, const unsigned int elapsed) {
-  if (dead_) return;
+bool Catapult::update(const Input& input, const Map& map, const unsigned int elapsed) {
+  if (dead_) return false;
+
+  const State old_state = state_;
+
+  if (input.key_held(inputs_[0])) {
+    set_movement(Catapult::LEFT);
+  } else if (input.key_held(inputs_[1])) {
+    set_movement(Catapult::RIGHT);
+  } else {
+    set_movement(Catapult::NONE);
+  }
+
+  if (input.key_held(inputs_[2])) {
+    adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
+  } else if (input.key_held(inputs_[3])) {
+    adjust_angle(ANGLE_ADJUST_RATE * elapsed);
+  }
+
+  if (input.key_pressed(inputs_[4])) ready_launch();
+  if (input.key_pressed(inputs_[5])) launch();
 
   if (wait_counter_ > 0) {
     wait_counter_ -= elapsed;
@@ -36,35 +57,36 @@ void Catapult::update(const Map& map, const unsigned int elapsed) {
       }
     }
 
-    return;
+  } else {
+
+    switch (dir_) {
+      case Catapult::LEFT:
+        x_ -= elapsed * _X_VELO;
+        break;
+
+      case Catapult::RIGHT:
+        x_ += elapsed * _X_VELO;
+        break;
+
+      default:
+        break;
+    }
   }
 
-  switch (dir_) {
-    case Catapult::LEFT:
-      x_ -= elapsed * _X_VELO;
-      break;
+  settle(map);
 
-    case Catapult::RIGHT:
-      x_ += elapsed * _X_VELO;
-      break;
+  return state_ != old_state;
+}
 
-    default:
-      break;
-  }
-
+void Catapult::settle(const Map& map) {
   const float y1 = map.get_height(x_ - 4), y2 = map.get_height(x_ + 4);
   const float ny = (y1 + y2) / 2.0f;
 
-  if (y_ > ny + 10) {
-    // TODO falling state
-    y_ += elapsed * _Y_VELO;
-  } else {
-    y_ = ny;
-    angle_ = atan2f(y2 - y1, 8.0f);
-  }
+  y_ = ny;
+  angle_ = atan2f(y2 - y1, 8.0f);
 }
 
-void Catapult::draw(Graphics& graphics, bool flip) const {
+void Catapult::draw(Graphics& graphics) const {
   if (dead_) return;
 
   int tile = 0;
@@ -87,7 +109,7 @@ void Catapult::draw(Graphics& graphics, bool flip) const {
       break;
   }
 
-  sprites_->draw_ex(graphics, tile, x_ - 8, y_ - 16, flip, angle_, 8, 16);
+  sprites_->draw_ex(graphics, tile, x_ - 8, y_ - 16, flipped_, angle_, 8, 16);
 }
 
 SDL_Rect Catapult::hit_box() const {
@@ -108,31 +130,21 @@ void Catapult::adjust_angle(float amount) {
 }
 
 void Catapult::set_movement(Catapult::Direction dir) {
-  if (state_ == Catapult::MOBILE) {
-    dir_ = dir;
-  }
+  if (state_ == Catapult::MOBILE) dir_ = dir;
 }
 
-bool Catapult::ready_launch() {
+void Catapult::ready_launch() {
   if (state_ == Catapult::MOBILE) {
     state_ = Catapult::LOADING;
     wait_counter_ = _LOAD_TIME;
     dir_ = Catapult::NONE;
-
-    return true;
   }
-
-  return false;
 }
 
-bool Catapult::launch() {
+void Catapult::launch() {
   if (state_ == Catapult::READY) {
     state_ = Catapult::LAUNCHING;
     wait_counter_ = _LAUNCH_TIME;
     dir_ = Catapult::NONE;
-
-    return true;
   }
-
-  return false;
 }

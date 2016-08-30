@@ -39,7 +39,7 @@ class BattleScreen : public Screen {
     Map map_;
     Clouds clouds_;
 
-    void launch_boulder(int x, int y, float v, float angle);
+    void launch_boulder(int x, int y, float angle);
 
     void add_dirt_particles(int x, int y, int n);
     void add_smoke_particles(int x, int y, int n);

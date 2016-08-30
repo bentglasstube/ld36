@@ -5,7 +5,17 @@
 #define randf(high, low)  (low + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(high - low)))
 
 namespace {
-  const static float ANGLE_ADJUST_RATE = 0.0001f;
+  const static float BOULDER_VELOCITY = 0.2f;
+  const static SDL_Scancode P1_KEYS[6] = {
+    SDL_SCANCODE_A, SDL_SCANCODE_D,
+    SDL_SCANCODE_Q, SDL_SCANCODE_E,
+    SDL_SCANCODE_S, SDL_SCANCODE_W,
+  };
+  const static SDL_Scancode P2_KEYS[6] = {
+    SDL_SCANCODE_J, SDL_SCANCODE_L,
+    SDL_SCANCODE_U, SDL_SCANCODE_O,
+    SDL_SCANCODE_K, SDL_SCANCODE_I,
+  };
 }
 
 void BattleScreen::init() {
@@ -37,60 +47,39 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
       break;
 
     case FIGHT:
-      if (input.key_held(SDL_SCANCODE_A)) {
-        p1_->set_movement(Catapult::LEFT);
-      } else if (input.key_held(SDL_SCANCODE_D)) {
-        p1_->set_movement(Catapult::RIGHT);
-      } else {
-        p1_->set_movement(Catapult::NONE);
-      }
+      if (p1_->update(input, map_, elapsed)) {
+        switch (p1_->get_state()) {
 
-      if (input.key_held(SDL_SCANCODE_Q)) {
-        p1_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
-      } else if (input.key_held(SDL_SCANCODE_E)) {
-        p1_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
-      }
+          case Catapult::LOADING:
+            audio.play_sample("ready");
+            break;
 
-      if (input.key_pressed(SDL_SCANCODE_S)) {
-        if (p1_->ready_launch()) audio.play_sample("ready");
-      } else if (input.key_pressed(SDL_SCANCODE_W)) {
-        if (p1_->launch()) {
-          audio.play_sample("launch");
-          launch_boulder(
-            p1_->get_x() - 7,
-            p1_->get_y() - 7,
-            0.2, 2 * M_PI - p1_->get_launch_angle() + p1_->get_angle());
+          case Catapult::LAUNCHING:
+            audio.play_sample("launch");
+            launch_boulder(p1_->launch_x(), p1_->launch_y(), p1_->launch_angle());
+            break;
+
+          default:
+            break;
         }
       }
 
-      if (input.key_held(SDL_SCANCODE_J)) {
-        p2_->set_movement(Catapult::LEFT);
-      } else if (input.key_held(SDL_SCANCODE_L)) {
-        p2_->set_movement(Catapult::RIGHT);
-      } else {
-        p2_->set_movement(Catapult::NONE);
-      }
+      if (p2_->update(input, map_, elapsed)) {
+        switch (p2_->get_state()) {
 
-      if (input.key_held(SDL_SCANCODE_U)) {
-        p2_->adjust_angle(-ANGLE_ADJUST_RATE * elapsed);
-      } else if (input.key_held(SDL_SCANCODE_O)) {
-        p2_->adjust_angle(ANGLE_ADJUST_RATE * elapsed);
-      }
+          case Catapult::LOADING:
+            audio.play_sample("ready");
+            break;
 
-      if (input.key_pressed(SDL_SCANCODE_K)) {
-        if (p2_->ready_launch()) audio.play_sample("ready");
-      } else if (input.key_pressed(SDL_SCANCODE_I)) {
-        if (p2_->launch()) {
-          audio.play_sample("launch");
-          launch_boulder(
-            p2_->get_x() + 7,
-            p2_->get_y() - 7,
-            0.2, M_PI + p2_->get_launch_angle() + p2_->get_angle());
+          case Catapult::LAUNCHING:
+            audio.play_sample("launch");
+            launch_boulder(p2_->launch_x(), p2_->launch_y(), p2_->launch_angle());
+            break;
+
+          default:
+            break;
         }
       }
-
-      p1_->update(map_, elapsed);
-      p2_->update(map_, elapsed);
 
       {
         auto boulder = boulders_.begin();
@@ -159,8 +148,8 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
 void BattleScreen::draw(Graphics& graphics) const {
   map_.draw(graphics);
 
-  p1_->draw(graphics, false);
-  p2_->draw(graphics, true);
+  p1_->draw(graphics);
+  p2_->draw(graphics);
 
   for (auto i = boulders_.begin(); i != boulders_.end(); ++i) (*i).draw(graphics);
   for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
@@ -192,8 +181,8 @@ Screen* BattleScreen::next_screen() {
   return NULL;
 }
 
-void BattleScreen::launch_boulder(int x, int y, float v, float angle) {
-  boulders_.emplace_back(x, y, v * cosf(angle), v * sinf(angle));
+void BattleScreen::launch_boulder(int x, int y, float angle) {
+  boulders_.emplace_back(x, y, BOULDER_VELOCITY * cosf(angle), BOULDER_VELOCITY * sinf(angle));
 }
 
 void BattleScreen::add_dirt_particles(int x, int y, int n) {
@@ -213,10 +202,10 @@ void BattleScreen::add_smoke_particles(int x, int y, int n) {
 void BattleScreen::reset_game() {
   map_.generate_terrain();
   clouds_.randomize();
-  p1_.reset(new Catapult(48, map_.get_height(48)));
-  p2_.reset(new Catapult(592, map_.get_height(592)));
+  p1_.reset(new Catapult(48, map_.get_height(48), false, P1_KEYS));
+  p2_.reset(new Catapult(592, map_.get_height(592), true, P2_KEYS));
   boulders_.clear();
 
-  p1_->update(map_, 0);
-  p2_->update(map_, 0);
+  p1_->settle(map_);
+  p2_->settle(map_);
 }
