@@ -8,11 +8,11 @@ Audio::~Audio() {
   Mix_HaltChannel(-1);
   Mix_HaltMusic();
 
-  for (ChunkMap::iterator i = chunks.begin(); i != chunks.end(); ++i) {
+  for (ChunkMap::iterator i = chunks_.begin(); i != chunks_.end(); ++i) {
     Mix_FreeChunk(i->second);
   }
 
-  for (MusicMap::iterator i = musics.begin(); i != musics.end(); ++i) {
+  for (MusicMap::iterator i = musics_.begin(); i != musics_.end(); ++i) {
     Mix_FreeMusic(i->second);
   }
 
@@ -31,20 +31,20 @@ void Audio::play_music(const std::string& name) {
 
 Mix_Chunk* Audio::load_chunk(const std::string& file) {
   const std::string path("content/" + file + ".wav");
-  if (chunks.count(path) == 0) {
+  if (chunks_.count(path) == 0) {
     Mix_Chunk* chunk = Mix_LoadWAV(path.c_str());
-    chunks[path] = chunk;
+    chunks_[path] = chunk;
   }
 
-  return chunks[path];
+  return chunks_[path];
 }
 
 Mix_Music* Audio::load_music(const std::string& file) {
   const std::string path("content/" + file + ".ogg");
-  if (musics.count(path) == 0) {
+  if (musics_.count(path) == 0) {
     Mix_Music* music = Mix_LoadMUS(path.c_str());
-    musics[path] = music;
+    musics_[path] = music;
   }
 
-  return musics[path];
+  return musics_[path];
 }

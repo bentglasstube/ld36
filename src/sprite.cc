@@ -1,19 +1,13 @@
 #include "sprite.h"
 
-Sprite::Sprite(const std::string& file, int x, int y, int w, int h) : file(file) {
-  rect.x = x;
-  rect.y = y;
-  rect.w = w;
-  rect.h = h;
+Sprite::Sprite(const std::string& file, int x, int y, int w, int h) : file_(file) {
+  rect_.x = x;
+  rect_.y = y;
+  rect_.w = w;
+  rect_.h = h;
 }
 
 void Sprite::draw(Graphics& graphics, int x, int y) {
-  SDL_Rect dest;
-
-  dest.x = x;
-  dest.y = y;
-  dest.w = rect.w;
-  dest.h = rect.h;
-
-  graphics.blit(file, &rect, &dest);
+  const SDL_Rect dest = {x, y, rect_.w, rect_.h };
+  graphics.blit(file_, &rect_, &dest);
 }

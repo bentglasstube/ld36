@@ -15,6 +15,6 @@ class Backdrop {
 
   private:
 
-    std::string file;
+    std::string file_;
 
 };

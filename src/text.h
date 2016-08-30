@@ -15,7 +15,7 @@ class Text {
 
   private:
 
-    std::string file;
-    int width;
+    std::string file_;
+    int width_;
 };
 

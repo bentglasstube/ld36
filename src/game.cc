@@ -32,28 +32,28 @@ void Game::loop() {
 
   unsigned int last_update = SDL_GetTicks();
 
-  screen.reset(new TitleScreen());
-  screen->init();
+  screen_.reset(new TitleScreen());
+  screen_->init();
 
   while (true) {
     // const unsigned int start = SDL_GetTicks();
 
-    if (!audio.music_playing()) audio.play_music(screen->get_music_track());
-    if (!screen->process_input(input)) return;
+    if (!audio.music_playing()) audio.play_music(screen_->get_music_track());
+    if (!screen_->process_input(input)) return;
 
     const unsigned int update = SDL_GetTicks();
     const unsigned int frame_ticks = update - last_update;
-    if (screen->update(input, audio, graphics, frame_ticks)) {
+    if (screen_->update(input, audio, graphics, frame_ticks)) {
 
       graphics.clear();
-      screen->draw(graphics);
+      screen_->draw(graphics);
       graphics.flip();
 
     } else {
 
-      screen.reset(screen->next_screen());
-      if (!screen) return;
-      screen->init();
+      screen_.reset(screen_->next_screen());
+      if (!screen_) return;
+      screen_->init();
 
       audio.stop_music();
     }

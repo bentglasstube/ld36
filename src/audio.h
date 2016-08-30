@@ -32,7 +32,7 @@ class Audio {
     typedef std::map<std::string, Mix_Chunk*> ChunkMap;
     typedef std::map<std::string, Mix_Music*> MusicMap;
 
-    ChunkMap chunks;
-    MusicMap musics;
+    ChunkMap chunks_;
+    MusicMap musics_;
 
 };

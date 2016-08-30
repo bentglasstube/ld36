@@ -15,5 +15,5 @@ class Game {
 
   private:
 
-    std::shared_ptr<Screen> screen;
+    std::shared_ptr<Screen> screen_;
 };

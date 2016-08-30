@@ -26,9 +26,9 @@ class Graphics {
   private:
 
     typedef std::map<std::string, SDL_Texture*> TextureMap;
-    TextureMap textures;
-    SDL_Window* window;
-    SDL_Renderer* renderer;
+    TextureMap textures_;
+    SDL_Window* window_;
+    SDL_Renderer* renderer_;
 
     void set_color(int color);
 };

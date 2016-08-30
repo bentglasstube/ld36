@@ -13,8 +13,8 @@ class Sprite {
     virtual void draw(Graphics& graphics, int x, int y);
 
   protected:
-    SDL_Rect rect;
+    SDL_Rect rect_;
 
   private:
-    std::string file;
+    std::string file_;
 };
