@@ -1,9 +1,7 @@
 #pragma once
 
-#include <map>
+#include <unordered_set>
 #include <SDL2/SDL.h>
-
-#define MAX_AXES 64
 
 class Input {
   public:
@@ -12,16 +10,16 @@ class Input {
     void key_down(const SDL_Event& event);
     void key_up(const SDL_Event& event);
 
-    bool key_pressed(SDL_Scancode key) { return pressed[key]; }
-    bool key_released(SDL_Scancode key) { return released[key]; }
-    bool key_held(SDL_Scancode key) { return held[key]; }
+    bool key_pressed(SDL_Scancode key) const { return pressed_.count(key) > 0; }
+    bool key_released(SDL_Scancode key) const { return released_.count(key) > 0; }
+    bool key_held(SDL_Scancode key) const { return held_.count(key) > 0; }
 
-    bool any_pressed() { return pressed.size() > 0; }
+    bool any_pressed() const { return !pressed_.empty(); }
 
   private:
 
-    std::map<SDL_Scancode, bool> held;
-    std::map<SDL_Scancode, bool> pressed;
-    std::map<SDL_Scancode, bool> released;
+    std::unordered_set<SDL_Scancode> held_;
+    std::unordered_set<SDL_Scancode> pressed_;
+    std::unordered_set<SDL_Scancode> released_;
 
 };

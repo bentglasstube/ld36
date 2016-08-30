@@ -1,16 +1,16 @@
 #include "input.h"
 
 void Input::begin_frame() {
-  pressed.clear();
-  released.clear();
+  pressed_.clear();
+  released_.clear();
 }
 
 void Input::key_down(const SDL_Event& event) {
-  pressed[event.key.keysym.scancode] = true;
-  held[event.key.keysym.scancode] = true;
+  pressed_.insert(event.key.keysym.scancode);
+  held_.insert(event.key.keysym.scancode);
 }
 
 void Input::key_up(const SDL_Event& event) {
-  released[event.key.keysym.scancode] = true;
-  held[event.key.keysym.scancode] = false;
+  released_.insert(event.key.keysym.scancode);
+  held_.erase(event.key.keysym.scancode);
 }
