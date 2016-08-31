@@ -33,19 +33,19 @@ void Graphics::blit(const std::string& file, const SDL_Rect* srect, const SDL_Re
 void Graphics::blit_ex(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect, const float angle, const SDL_Point* center, const Graphics::FlipDirection flip) {
   SDL_RendererFlip f = SDL_FLIP_NONE;
   switch (flip) {
-    case NONE:
+    case FlipDirection::NONE:
       f = SDL_FLIP_NONE;
       break;
 
-    case HORIZONTAL:
+    case FlipDirection::HORIZONTAL:
       f = SDL_FLIP_HORIZONTAL;
       break;
 
-    case VERTICAL:
+    case FlipDirection::VERTICAL:
       f = SDL_FLIP_VERTICAL;
       break;
 
-    case BOTH:
+    case FlipDirection::BOTH:
       f = (SDL_RendererFlip) (SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL);
       break;
   }

@@ -22,7 +22,7 @@ void BattleScreen::init() {
   text_.reset(new Text("text", 8));
 
   p1score_ = p2score_ = 0;
-  state_ = BattleScreen::COUNTDOWN;
+  state_ = GameState::COUNTDOWN;
   counter_ = 1500;
 
   reset_game();
@@ -39,23 +39,23 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
   counter_ -= elapsed;
 
   switch (state_) {
-    case COUNTDOWN:
+    case GameState::COUNTDOWN:
       if (counter_ < 0) {
-        state_ = FIGHT;
+        state_ = GameState::FIGHT;
         counter_ = 0;
       }
       break;
 
-    case FIGHT:
+    case GameState::FIGHT:
       for (auto player = players_.begin(); player != players_.end(); ++player) {
         if ((*player).update(input, map_, elapsed)) {
           switch ((*player).get_state()) {
 
-            case Catapult::LOADING:
+            case Catapult::State::LOADING:
               audio.play_sample("ready");
               break;
 
-            case Catapult::LAUNCHING:
+            case Catapult::State::LAUNCHING:
               audio.play_sample("launch");
               launch_boulder((*player).launch_x(), (*player).launch_y(), (*player).launch_angle());
               break;
@@ -104,7 +104,7 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
           add_smoke_particles((*player).get_x(), (*player).get_y(), 100);
           audio.play_sample("explode");
 
-          state_ = WINNER;
+          state_ = GameState::WINNER;
           counter_ = 5000;
         }
       }
@@ -115,9 +115,9 @@ bool BattleScreen::update(Input& input, Audio& audio, unsigned int elapsed) {
 
       break;
 
-    case WINNER:
+    case GameState::WINNER:
       if (counter_ < 0) {
-        state_ = COUNTDOWN;
+        state_ = GameState::COUNTDOWN;
         counter_ = 1500;
         reset_game();
       }
@@ -143,19 +143,19 @@ void BattleScreen::draw(Graphics& graphics) const {
   text_->draw(graphics, buffer, 4, 340);
 
   snprintf(buffer, 32, "%2.0f*", players_[1].get_launch_angle() * 180 / M_PI);
-  text_->draw(graphics, buffer, 636, 340, Text::RIGHT);
+  text_->draw(graphics, buffer, 636, 340, Text::Alignment::RIGHT);
 
-  if (state_ == COUNTDOWN) {
+  if (state_ == GameState::COUNTDOWN) {
     snprintf(buffer, 32, "%d", counter_ / 500 + 1);
-    text_->draw(graphics, buffer, 320, 100, Text::CENTER);
-  } else if (state_ == WINNER) {
+    text_->draw(graphics, buffer, 320, 100, Text::Alignment::CENTER);
+  } else if (state_ == GameState::WINNER) {
     int p = players_[0].is_dead() ? 2 : 1;
     snprintf(buffer, 32, "Player %d scores!", p);
-    text_->draw(graphics, buffer, 320, 100, Text::CENTER);
+    text_->draw(graphics, buffer, 320, 100, Text::Alignment::CENTER);
   }
 
   snprintf(buffer, 32, "%d : %d", p1score_, p2score_);
-  text_->draw(graphics, buffer, 320, 340, Text::CENTER);
+  text_->draw(graphics, buffer, 320, 340, Text::Alignment::CENTER);
 }
 
 Screen* BattleScreen::next_screen() {

@@ -9,14 +9,14 @@ void Text::draw(Graphics& graphics, const std::string& text, int x, int y, Text:
   SDL_Rect dest = { x, y, width_, width_ * 2 };
 
   switch (alignment) {
-    case LEFT:
+    case Alignment::LEFT:
       break;
 
-    case CENTER:
+    case Alignment::CENTER:
       dest.x -= width_ / 2 * text.length();
       break;
 
-    case RIGHT:
+    case Alignment::RIGHT:
       dest.x -= width_ * text.length();
       break;
   }
@@ -30,7 +30,7 @@ void Text::draw(Graphics& graphics, const std::string& text, int x, int y, Text:
 
     graphics.blit(file_, &source, &dest);
 
-    if ((*i) == '\n' && alignment == LEFT) {
+    if ((*i) == '\n' && alignment == Alignment::LEFT) {
       dest.x = x;
       dest.y += width_ * 2;
     } else {

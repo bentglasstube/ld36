@@ -13,7 +13,7 @@ bool TitleScreen::update(Input& input, Audio&, unsigned int) {
 
 void TitleScreen::draw(Graphics& graphics) const {
   backdrop_->draw(graphics);
-  text_->draw(graphics, "Press any key", 320, 340, Text::CENTER);
+  text_->draw(graphics, "Press any key", 320, 340, Text::Alignment::CENTER);
 
   text_->draw(graphics, "- Player 1 - \nA/D - Move\nQ/E - Adjust angle\nS - Load catapult\nW - Fire", 8, 200);
   text_->draw(graphics, "- Player 2 - \nJ/L - Move\nU/O - Adjust angle\nK - Load catapult\nI - Fire", 480, 200);

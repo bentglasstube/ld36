@@ -25,7 +25,7 @@ class BattleScreen : public Screen {
 
   private:
 
-    enum GameState { COUNTDOWN, FIGHT, WINNER };
+    enum class GameState { COUNTDOWN, FIGHT, WINNER };
 
     GameState state_;
     int p1score_, p2score_;

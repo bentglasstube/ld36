@@ -10,7 +10,7 @@
 class Catapult {
   public:
 
-    enum State { MOBILE, LOADING, READY, LAUNCHING };
+    enum class State { MOBILE, LOADING, READY, LAUNCHING };
 
     Catapult(int x, int y, bool flipped, const SDL_Scancode *inputs);
 
@@ -37,7 +37,7 @@ class Catapult {
 
   private:
 
-    enum Direction { NONE, LEFT, RIGHT };
+    enum class Direction { NONE, LEFT, RIGHT };
 
     float x_, y_, angle_, launch_angle_;
     Direction dir_;

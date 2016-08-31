@@ -7,7 +7,7 @@
 class Graphics {
   public:
 
-    enum FlipDirection { NONE, HORIZONTAL, VERTICAL, BOTH };
+    enum class FlipDirection { NONE, HORIZONTAL, VERTICAL, BOTH };
 
     Graphics();
     ~Graphics();

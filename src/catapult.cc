@@ -12,7 +12,7 @@ namespace {
 
 Catapult::Catapult(int x, int y, bool flipped, const SDL_Scancode *inputs) :
   x_(x), y_(y), angle_(0), launch_angle_(M_PI / 4.0f),
-  dir_(Catapult::NONE), state_(Catapult::MOBILE), wait_counter_(0), dead_(false), flipped_(flipped) {
+  dir_(Direction::NONE), state_(State::MOBILE), wait_counter_(0), dead_(false), flipped_(flipped) {
   sprites_.reset(new SpriteMap("catapult", 6, 16, 16));
   for (int i = 0; i < 6; ++i) inputs_[i] = inputs[i];
 }
@@ -23,11 +23,11 @@ bool Catapult::update(const Input& input, const Map& map, const unsigned int ela
   const State old_state = state_;
 
   if (input.key_held(inputs_[0])) {
-    set_movement(Catapult::LEFT);
+    set_movement(Direction::LEFT);
   } else if (input.key_held(inputs_[1])) {
-    set_movement(Catapult::RIGHT);
+    set_movement(Direction::RIGHT);
   } else {
-    set_movement(Catapult::NONE);
+    set_movement(Direction::NONE);
   }
 
   if (input.key_held(inputs_[2])) {
@@ -44,12 +44,12 @@ bool Catapult::update(const Input& input, const Map& map, const unsigned int ela
 
     if (wait_counter_ <= 0) {
       switch (state_) {
-        case Catapult::LOADING:
-          state_ = Catapult::READY;
+        case State::LOADING:
+          state_ = State::READY;
           break;
 
-        case Catapult::LAUNCHING:
-          state_ = Catapult::MOBILE;
+        case State::LAUNCHING:
+          state_ = State::MOBILE;
           break;
 
         default:
@@ -60,11 +60,11 @@ bool Catapult::update(const Input& input, const Map& map, const unsigned int ela
   } else {
 
     switch (dir_) {
-      case Catapult::LEFT:
+      case Direction::LEFT:
         x_ -= elapsed * _X_VELO;
         break;
 
-      case Catapult::RIGHT:
+      case Direction::RIGHT:
         x_ += elapsed * _X_VELO;
         break;
 
@@ -92,19 +92,19 @@ void Catapult::draw(Graphics& graphics) const {
   int tile = 0;
 
   switch (state_) {
-    case Catapult::MOBILE:
+    case State::MOBILE:
       tile = 0;
       break;
 
-    case Catapult::LOADING:
+    case State::LOADING:
       tile = (_LOAD_TIME - wait_counter_) / (_LOAD_TIME / 4);
       break;
 
-    case Catapult::READY:
+    case State::READY:
       tile = 4;
       break;
 
-    case Catapult::LAUNCHING:
+    case State::LAUNCHING:
       tile = wait_counter_ / (_LAUNCH_TIME / 4);
       break;
   }
@@ -122,7 +122,7 @@ bool Catapult::point_within(float x, float y) const {
 }
 
 void Catapult::adjust_angle(float amount) {
-  if (state_ == Catapult::MOBILE) {
+  if (state_ == State::MOBILE) {
     launch_angle_ += amount;
     if (launch_angle_ < M_PI / 6.0f) launch_angle_ = M_PI / 6.0f;
     if (launch_angle_ > M_PI / 3.0f) launch_angle_ = M_PI / 3.0f;
@@ -130,21 +130,21 @@ void Catapult::adjust_angle(float amount) {
 }
 
 void Catapult::set_movement(Catapult::Direction dir) {
-  if (state_ == Catapult::MOBILE) dir_ = dir;
+  if (state_ == State::MOBILE) dir_ = dir;
 }
 
 void Catapult::ready_launch() {
-  if (state_ == Catapult::MOBILE) {
-    state_ = Catapult::LOADING;
+  if (state_ == State::MOBILE) {
+    state_ = State::LOADING;
     wait_counter_ = _LOAD_TIME;
-    dir_ = Catapult::NONE;
+    dir_ = Direction::NONE;
   }
 }
 
 void Catapult::launch() {
-  if (state_ == Catapult::READY) {
-    state_ = Catapult::LAUNCHING;
+  if (state_ == State::READY) {
+    state_ = State::LAUNCHING;
     wait_counter_ = _LAUNCH_TIME;
-    dir_ = Catapult::NONE;
+    dir_ = Direction::NONE;
   }
 }
