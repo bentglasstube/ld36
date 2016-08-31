@@ -2,12 +2,12 @@
 
 #include <memory>
 
-#include "audio.h"
-#include "backdrop.h"
-#include "graphics.h"
-#include "input.h"
-#include "screen.h"
-#include "text.h"
+#include "framework/audio.h"
+#include "framework/backdrop.h"
+#include "framework/graphics.h"
+#include "framework/input.h"
+#include "framework/screen.h"
+#include "framework/text.h"
 
 class TitleScreen : public Screen {
   public:

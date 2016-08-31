@@ -3,16 +3,17 @@
 #include <memory>
 #include <vector>
 
-#include "audio.h"
 #include "boulder.h"
 #include "catapult.h"
 #include "clouds.h"
-#include "graphics.h"
-#include "input.h"
 #include "map.h"
-#include "particle.h"
-#include "screen.h"
-#include "text.h"
+
+#include "framework/graphics.h"
+#include "framework/input.h"
+#include "framework/audio.h"
+#include "framework/particle.h"
+#include "framework/screen.h"
+#include "framework/text.h"
 
 class BattleScreen : public Screen {
   public:

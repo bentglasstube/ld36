@@ -5,9 +5,8 @@
 #include <time.h>
 
 #include "audio.h"
+#include "graphics.h"
 #include "input.h"
-#include "text.h"
-#include "title_screen.h"
 
 Game::Game() {
   srand(static_cast<unsigned int>(time(NULL)));
@@ -18,16 +17,14 @@ Game::~Game() {
   SDL_Quit();
 }
 
-void Game::loop() {
+void Game::loop(Screen* initial_screen) {
   Graphics graphics;
   Audio audio;
   Input input;
 
-  Text text("text");
-
   unsigned int last_update = SDL_GetTicks();
 
-  screen_.reset(new TitleScreen());
+  screen_.reset(initial_screen);
   screen_->init();
 
   while (true) {

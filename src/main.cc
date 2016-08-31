@@ -1,9 +1,12 @@
 #include <SDL2/SDL.h>
-#include "game.h"
+
+#include "title_screen.h"
+
+#include "framework/game.h"
 
 int main(int, char**) {
   Game game;
-  game.loop();
+  game.loop(new TitleScreen());
 
   return 0;
 }

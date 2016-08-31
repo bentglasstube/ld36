@@ -2,7 +2,6 @@
 
 #include <memory>
 
-#include "graphics.h"
 #include "screen.h"
 
 class Game {
@@ -11,7 +10,7 @@ class Game {
     Game();
     ~Game();
 
-    void loop();
+    void loop(Screen* initial_screen);
 
   private:
 

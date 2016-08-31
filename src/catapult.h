@@ -2,10 +2,11 @@
 
 #include <memory>
 
-#include "graphics.h"
-#include "input.h"
 #include "map.h"
-#include "spritemap.h"
+
+#include "framework/graphics.h"
+#include "framework/input.h"
+#include "framework/spritemap.h"
 
 class Catapult {
   public:
