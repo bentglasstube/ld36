@@ -13,6 +13,5 @@ void Boulder::update(unsigned int elapsed) {
 }
 
 void Boulder::draw(Graphics& graphics) const {
-  const SDL_Rect r = { (int)x_, (int)y_, 2, 2 };
-  graphics.draw_rect(&r, 0x697175ff, true);
+  graphics.draw_circle(x_, y_, 1, 0x697175ff, true);
 }
