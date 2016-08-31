@@ -20,6 +20,7 @@ class Graphics {
     void draw_pixel(int x, int y, int color);
     void draw_line(int x1, int y1, int x2, int y2, int color);
     void draw_rect(const SDL_Rect* rect, int color, bool filled);
+    void draw_circle(int x, int y, int r, int color, bool filled);
 
     SDL_Texture* load_image(const std::string& file);
 

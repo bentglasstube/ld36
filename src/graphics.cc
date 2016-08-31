@@ -78,6 +78,41 @@ void Graphics::draw_rect(const SDL_Rect* rect, int color, bool filled) {
   filled ? SDL_RenderFillRect(renderer_, rect) : SDL_RenderDrawRect(renderer_, rect);
 }
 
+void Graphics::draw_circle(int x, int y, int r, int color, bool filled) {
+  set_color(color);
+  int cx = r, cy = 0, error = 0;
+
+  while (cx >= cy) {
+    if (filled) {
+      SDL_RenderDrawLine(renderer_, x - cx, y + cy, x + cx, y + cy);
+      SDL_RenderDrawLine(renderer_, x - cy, y + cx, x + cy, y + cx);
+      SDL_RenderDrawLine(renderer_, x - cx, y - cy, x + cx, y - cy);
+      SDL_RenderDrawLine(renderer_, x - cy, y - cx, x + cy, y - cx);
+    } else {
+      SDL_Point points[8];
+
+      points[0].x = points[7].x = x + cx;
+      points[1].x = points[6].x = x + cy;
+      points[2].x = points[5].x = x - cy;
+      points[3].x = points[4].x = x - cx;
+
+      points[0].y = points[3].y = y + cy;
+      points[1].y = points[2].y = y + cx;
+      points[4].y = points[7].y = y - cy;
+      points[5].y = points[6].y = y - cx;
+
+      SDL_RenderDrawPoints(renderer_, points, 8);
+    }
+
+    ++cy;
+    error += 1 + 2 * cy;
+    if (2 * (error - cx) + 1 > 0) {
+      --cx;
+      error += 1 - 2 * cx;
+    }
+  }
+}
+
 SDL_Texture* Graphics::load_image(const std::string& file) {
   const std::string path("content/" + file+ ".bmp");
   if (textures_.count(path) == 0) {
