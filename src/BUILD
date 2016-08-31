@@ -44,6 +44,7 @@ cc_library(
     hdrs = ["catapult.h"],
     deps = [
         ":graphics",
+        ":input",
         ":map",
         ":spritemap",
     ],
