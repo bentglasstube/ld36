@@ -18,8 +18,8 @@ class Input {
 
   private:
 
-    std::unordered_set<SDL_Scancode> held_;
-    std::unordered_set<SDL_Scancode> pressed_;
-    std::unordered_set<SDL_Scancode> released_;
+    std::unordered_set<SDL_Scancode, std::hash<int>> held_;
+    std::unordered_set<SDL_Scancode, std::hash<int>> pressed_;
+    std::unordered_set<SDL_Scancode, std::hash<int>> released_;
 
 };
