@@ -15,7 +15,7 @@ cc_library(
 
 cc_library(
     name = "game",
-    srcs = ["game.cc" ],
+    srcs = ["game.cc"],
     hdrs = ["game.h"],
     deps = [
         ":audio",

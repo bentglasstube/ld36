@@ -5,5 +5,5 @@ filegroup(
     srcs = glob([
         "*.bmp",
         "*.wav",
-    ])
+    ]),
 )
