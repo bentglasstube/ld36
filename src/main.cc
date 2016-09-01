@@ -5,7 +5,7 @@
 #include "framework/game.h"
 
 int main(int, char**) {
-  Game game;
+  Game game(640, 360);
   game.loop(new TitleScreen());
 
   return 0;

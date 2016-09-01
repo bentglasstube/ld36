@@ -9,7 +9,7 @@ class Graphics {
 
     enum class FlipDirection { NONE, HORIZONTAL, VERTICAL, BOTH };
 
-    Graphics();
+    Graphics(int width, int height);
     ~Graphics();
 
     void blit(const std::string& file, const SDL_Rect* srect, const SDL_Rect* drect);
@@ -22,10 +22,14 @@ class Graphics {
     void draw_rect(const SDL_Rect* rect, int color, bool filled);
     void draw_circle(int x, int y, int r, int color, bool filled);
 
+    int width() const { return width_; }
+    int height() const { return height_; }
+
     SDL_Texture* load_image(const std::string& file);
 
   private:
 
+    int width_, height_;
     typedef std::map<std::string, SDL_Texture*> TextureMap;
     TextureMap textures_;
     SDL_Window* window_;

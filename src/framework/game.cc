@@ -8,7 +8,7 @@
 #include "graphics.h"
 #include "input.h"
 
-Game::Game() {
+Game::Game(int width, int height) : w_(width), h_(height) {
   srand(static_cast<unsigned int>(time(NULL)));
   SDL_Init(SDL_INIT_EVERYTHING);
 }
@@ -18,7 +18,7 @@ Game::~Game() {
 }
 
 void Game::loop(Screen* initial_screen) {
-  Graphics graphics;
+  Graphics graphics(w_, h_);
   Audio audio;
   Input input;
 

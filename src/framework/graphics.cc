@@ -1,18 +1,15 @@
 #include "graphics.h"
 
-namespace {
-  const unsigned int width = 640;
-  const unsigned int height = 360;
-}
+#include "math.h"
 
-Graphics::Graphics() {
+Graphics::Graphics(int width, int height) : width_(width), height_(height) {
   int flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_FULLSCREEN_DESKTOP;
 
-  window_ = SDL_CreateWindow("Catapults", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
+  window_ = SDL_CreateWindow("Catapults", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width_, height_, flags);
   renderer_ = SDL_CreateRenderer(window_, -1, 0);
 
-  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest"); // retro!
-  SDL_RenderSetLogicalSize(renderer_, width, height);
+  SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "nearest");
+  SDL_RenderSetLogicalSize(renderer_, width_, height_);
   SDL_SetRenderDrawBlendMode(renderer_, SDL_BLENDMODE_BLEND);
 }
 
