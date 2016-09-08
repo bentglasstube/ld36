@@ -9,12 +9,12 @@ cc_library(
         ":catapult",
         ":clouds",
         ":map",
-        "//src/framework:audio",
-        "//src/framework:graphics",
-        "//src/framework:input",
-        "//src/framework:particle",
-        "//src/framework:screen",
-        "//src/framework:text",
+        "@libgam//:audio",
+        "@libgam//:graphics",
+        "@libgam//:input",
+        "@libgam//:particle",
+        "@libgam//:screen",
+        "@libgam//:text",
     ],
 )
 
@@ -22,7 +22,7 @@ cc_library(
     name = "boulder",
     srcs = ["boulder.cc"],
     hdrs = ["boulder.h"],
-    deps = ["//src/framework:graphics"],
+    deps = ["@libgam//:graphics"],
 )
 
 cc_library(
@@ -31,9 +31,9 @@ cc_library(
     hdrs = ["catapult.h"],
     deps = [
         ":map",
-        "//src/framework:graphics",
-        "//src/framework:input",
-        "//src/framework:spritemap",
+        "@libgam//:graphics",
+        "@libgam//:input",
+        "@libgam//:spritemap",
     ],
 )
 
@@ -44,7 +44,7 @@ cc_library(
         "clouds.h",
         "stb_perlin.h",
     ],
-    deps = ["//src/framework:graphics"],
+    deps = ["@libgam//:graphics"],
 )
 
 cc_library(
@@ -52,7 +52,7 @@ cc_library(
     srcs = ["main.cc"],
     deps = [
         ":title_screen",
-        "//src/framework:game",
+        "@libgam//:game",
     ],
 )
 
@@ -64,8 +64,8 @@ cc_library(
         "stb_perlin.h",
     ],
     deps = [
-        "//src/framework:graphics",
-        "//src/framework:text",
+        "@libgam//:graphics",
+        "@libgam//:text",
     ],
 )
 
@@ -75,8 +75,8 @@ cc_library(
     hdrs = ["player.h"],
     deps = [
         ":map",
-        "//src/framework:audio",
-        "//src/framework:spritemap",
+        "@libgam//:audio",
+        "@libgam//:spritemap",
     ],
 )
 
@@ -86,7 +86,7 @@ cc_library(
     hdrs = ["title_screen.h"],
     deps = [
         ":battle_screen",
-        "//src/framework:backdrop",
-        "//src/framework:screen",
+        "@libgam//:backdrop",
+        "@libgam//:screen",
     ],
 )

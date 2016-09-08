@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "framework/graphics.h"
+#include "graphics.h"
 
 class Map {
   public:

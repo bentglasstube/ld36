@@ -1,6 +1,6 @@
 #pragma once
 
-#include "framework/graphics.h"
+#include "graphics.h"
 
 class Clouds {
   public:

@@ -4,9 +4,9 @@
 
 #include "map.h"
 
-#include "framework/graphics.h"
-#include "framework/input.h"
-#include "framework/spritemap.h"
+#include "graphics.h"
+#include "input.h"
+#include "spritemap.h"
 
 class Catapult {
   public:

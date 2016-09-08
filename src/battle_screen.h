@@ -8,12 +8,12 @@
 #include "clouds.h"
 #include "map.h"
 
-#include "framework/graphics.h"
-#include "framework/input.h"
-#include "framework/audio.h"
-#include "framework/particle.h"
-#include "framework/screen.h"
-#include "framework/text.h"
+#include "graphics.h"
+#include "input.h"
+#include "audio.h"
+#include "particle.h"
+#include "screen.h"
+#include "text.h"
 
 class BattleScreen : public Screen {
   public:
