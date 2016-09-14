@@ -5,11 +5,6 @@
 #define STB_PERLIN_IMPLEMENTATION 1
 #include "stb_perlin.h"
 
-namespace {
-  const static float SMOOTHNESS = 48.0f;
-  const static int AMPLITUDE = 50;
-}
-
 Map::Map() {
   for (int x = 0; x < 640; ++x) {
     heights_[x] = 0;
@@ -20,7 +15,10 @@ void Map::generate_terrain() {
   const float y = rand() / static_cast<float>(RAND_MAX);
 
   for (int x = 0; x < 640; ++x) {
-    heights_[x] = 300 + AMPLITUDE * stb_perlin_noise3(x / SMOOTHNESS, y, 0);
+    heights_[x] = 250;
+    for (int i = 0; i < 5; ++i) {
+      heights_[x] += (4 << i) * stb_perlin_noise3(x / (float)(16 << i), y, 0);
+    }
   }
 }
 
