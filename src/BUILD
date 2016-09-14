@@ -87,6 +87,7 @@ cc_library(
     deps = [
         ":battle_screen",
         "@libgam//:backdrop",
+        "@libgam//:menu",
         "@libgam//:screen",
     ],
 )

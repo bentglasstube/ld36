@@ -6,6 +6,7 @@
 #include "backdrop.h"
 #include "graphics.h"
 #include "input.h"
+#include "menu.h"
 #include "screen.h"
 #include "text.h"
 
@@ -22,4 +23,6 @@ class TitleScreen : public Screen {
 
     std::unique_ptr<Text> text_;
     std::unique_ptr<Backdrop> backdrop_;
+    std::unique_ptr<Menu> menu_;
+
 };
