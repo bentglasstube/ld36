@@ -94,6 +94,7 @@ bool BattleScreen::update(const Input& input, Audio& audio, unsigned int elapsed
                 add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 250);
                 audio.play_sample("explode");
                 target = targets_.erase(target);
+                ++p1score_;
                 erase = true;
               } else {
                 ++target;
@@ -132,6 +133,8 @@ bool BattleScreen::update(const Input& input, Audio& audio, unsigned int elapsed
         if (players_[0].is_dead()) p2score_++;
         if (players_[1].is_dead()) p1score_++;
       }
+
+      timer_ += elapsed;
 
       break;
 
@@ -177,19 +180,19 @@ void BattleScreen::draw(Graphics& graphics) const {
 
   switch (mode_) {
     case GameMode::PRACTICE:
-      text_->draw(graphics, "Practice", 320, 340, Text::Alignment::CENTER);
+      snprintf(buffer, 32, "Hits: %d", p1score_);
       break;
 
     case GameMode::SIEGE:
-      // TODO show timer
+      snprintf(buffer, 32, "%d:%02d", timer_ / 60000, (timer_ / 1000) % 60);
       break;
 
     case GameMode::BATTLE:
       snprintf(buffer, 32, "%d : %d", p1score_, p2score_);
-      text_->draw(graphics, buffer, 320, 340, Text::Alignment::CENTER);
-
       break;
   }
+
+  text_->draw(graphics, buffer, 320, 340, Text::Alignment::CENTER);
 }
 
 Screen* BattleScreen::next_screen() {
@@ -229,6 +232,8 @@ void BattleScreen::reset_game() {
 
   players_.clear();
   players_.emplace_back(48, map_.get_height(48), false, P1_KEYS);
+
+  timer_ = 0;
 
   switch (mode_) {
     case GameMode::PRACTICE:

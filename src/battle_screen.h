@@ -38,7 +38,7 @@ class BattleScreen : public Screen {
     GameState state_;
     GameMode mode_;
     int p1score_, p2score_;
-    int counter_;
+    int counter_, timer_;
     std::unique_ptr<Text> text_;
 
     std::vector<Catapult> players_;
