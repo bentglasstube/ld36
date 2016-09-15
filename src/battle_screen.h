@@ -18,17 +18,24 @@
 class BattleScreen : public Screen {
   public:
 
+    enum class GameMode { PRACTICE, SIEGE, BATTLE };
+
+    BattleScreen(GameMode mode);
+
     void init();
     bool update(const Input& input, Audio& audio, unsigned int elapsed);
     void draw(Graphics& graphics) const;
 
     Screen* next_screen();
 
+    void set_mode(GameMode mode);
+
   private:
 
     enum class GameState { COUNTDOWN, FIGHT, WINNER };
 
     GameState state_;
+    GameMode mode_;
     int p1score_, p2score_;
     int counter_;
     std::unique_ptr<Text> text_;

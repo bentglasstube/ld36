@@ -36,19 +36,17 @@ void TitleScreen::draw(Graphics& graphics) const {
 Screen* TitleScreen::next_screen() {
   switch (menu_->selected()) {
     case 0:
-      // TODO practice mode
-      return new BattleScreen();
+      return new BattleScreen(BattleScreen::GameMode::PRACTICE);
 
     case 1:
-      // TODO seige mode
-      return new BattleScreen();
+      return new BattleScreen(BattleScreen::GameMode::SIEGE);
 
     case 2:
-      return new BattleScreen();
+      return new BattleScreen(BattleScreen::GameMode::BATTLE);
 
     case 3:
       // TODO online mode
-      return new BattleScreen();
+      return new BattleScreen(BattleScreen::GameMode::PRACTICE);
 
     default:
       return NULL;

@@ -18,6 +18,8 @@ namespace {
   };
 }
 
+BattleScreen::BattleScreen(BattleScreen::GameMode mode) : mode_(mode) {}
+
 void BattleScreen::init() {
   text_.reset(new Text("text", 8));
 
