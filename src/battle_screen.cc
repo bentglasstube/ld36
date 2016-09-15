@@ -100,7 +100,7 @@ bool BattleScreen::update(const Input& input, Audio& audio, unsigned int elapsed
               }
             }
 
-            if (targets_.empty()) spawn_target(5);
+            if (mode_ == GameMode::PRACTICE && targets_.empty()) spawn_target(5);
           }
 
           if ((*boulder).get_y() > ground_height) {
