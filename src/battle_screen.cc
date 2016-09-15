@@ -175,8 +175,21 @@ void BattleScreen::draw(Graphics& graphics) const {
     text_->draw(graphics, buffer, 320, 100, Text::Alignment::CENTER);
   }
 
-  snprintf(buffer, 32, "%d : %d", p1score_, p2score_);
-  text_->draw(graphics, buffer, 320, 340, Text::Alignment::CENTER);
+  switch (mode_) {
+    case GameMode::PRACTICE:
+      text_->draw(graphics, "Practice", 320, 340, Text::Alignment::CENTER);
+      break;
+
+    case GameMode::SIEGE:
+      // TODO show timer
+      break;
+
+    case GameMode::BATTLE:
+      snprintf(buffer, 32, "%d : %d", p1score_, p2score_);
+      text_->draw(graphics, buffer, 320, 340, Text::Alignment::CENTER);
+
+      break;
+  }
 }
 
 Screen* BattleScreen::next_screen() {
