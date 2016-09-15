@@ -7,6 +7,7 @@
 #include "catapult.h"
 #include "clouds.h"
 #include "map.h"
+#include "target.h"
 
 #include "graphics.h"
 #include "input.h"
@@ -43,11 +44,14 @@ class BattleScreen : public Screen {
     std::vector<Catapult> players_;
     std::vector<Boulder> boulders_;
     std::vector<Particle> particles_;
+    std::vector<Target> targets_;
 
     Map map_;
     Clouds clouds_;
 
     void launch_boulder(int x, int y, float angle);
+
+    void spawn_target(int count);
 
     void add_dirt_particles(int x, int y, int n);
     void add_smoke_particles(int x, int y, int n);

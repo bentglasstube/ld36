@@ -85,6 +85,20 @@ bool BattleScreen::update(const Input& input, Audio& audio, unsigned int elapsed
                 erase = true;
               }
             }
+
+            auto target = targets_.begin();
+            while (target != targets_.end()) {
+              if ((*target).point_within((*boulder).get_x(), (*boulder).get_y())) {
+                add_dirt_particles((*boulder).get_x(), (*boulder).get_y(), 250);
+                audio.play_sample("explode");
+                target = targets_.erase(target);
+                erase = true;
+              } else {
+                ++target;
+              }
+            }
+
+            if (targets_.empty()) spawn_target(5);
           }
 
           if ((*boulder).get_y() > ground_height) {
@@ -136,6 +150,7 @@ void BattleScreen::draw(Graphics& graphics) const {
   for (auto i = players_.begin(); i != players_.end(); ++i) (*i).draw(graphics);
   for (auto i = boulders_.begin(); i != boulders_.end(); ++i) (*i).draw(graphics);
   for (auto i = particles_.begin(); i != particles_.end(); ++i) (*i).draw(graphics);
+  for (auto i = targets_.begin(); i != targets_.end(); ++i) (*i).draw(graphics);
 
   clouds_.draw(graphics);
 
@@ -168,6 +183,14 @@ void BattleScreen::launch_boulder(int x, int y, float angle) {
   boulders_.emplace_back(x, y, BOULDER_VELOCITY * cosf(angle), BOULDER_VELOCITY * sinf(angle));
 }
 
+void BattleScreen::spawn_target(int count) {
+  for (int i = 0; i < count; ++i) {
+    const float x = randf(340, 620);
+    const float y = map_.get_height(x);
+    targets_.emplace_back(x, y);
+  }
+}
+
 void BattleScreen::add_dirt_particles(int x, int y, int n) {
   for (int i = 0; i < n; ++i) {
     const float a = randf(M_PI, 2 * M_PI);
@@ -189,7 +212,21 @@ void BattleScreen::reset_game() {
 
   players_.clear();
   players_.emplace_back(48, map_.get_height(48), false, P1_KEYS);
-  players_.emplace_back(592, map_.get_height(592), true, P2_KEYS);
+
+  switch (mode_) {
+    case GameMode::PRACTICE:
+      spawn_target(5);
+      break;
+
+    case GameMode::BATTLE:
+      players_.emplace_back(592, map_.get_height(592), true, P2_KEYS);
+      break;
+
+    default:
+      // nothing
+      break;
+  }
 
   for (auto player = players_.begin(); player != players_.end(); ++player) (*player).settle(map_);
+
 }

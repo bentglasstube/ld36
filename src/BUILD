@@ -9,6 +9,7 @@ cc_library(
         ":catapult",
         ":clouds",
         ":map",
+        ":target",
         "@libgam//:audio",
         "@libgam//:graphics",
         "@libgam//:input",
@@ -77,6 +78,16 @@ cc_library(
         ":map",
         "@libgam//:audio",
         "@libgam//:spritemap",
+    ],
+)
+
+cc_library(
+    name = "target",
+    srcs = ["target.cc"],
+    hdrs = ["target.h"],
+    deps = [
+        "@libgam//:graphics",
+        "@libgam//:sprite",
     ],
 )
 
