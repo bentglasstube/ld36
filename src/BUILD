@@ -1,25 +1,6 @@
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "battle_screen",
-    srcs = ["battle_screen.cc"],
-    hdrs = ["battle_screen.h"],
-    deps = [
-        ":boulder",
-        ":catapult",
-        ":clouds",
-        ":map",
-        ":target",
-        "@libgam//:audio",
-        "@libgam//:graphics",
-        "@libgam//:input",
-        "@libgam//:particle",
-        "@libgam//:screen",
-        "@libgam//:text",
-    ],
-)
-
-cc_library(
     name = "boulder",
     srcs = ["boulder.cc"],
     hdrs = ["boulder.h"],
@@ -52,7 +33,7 @@ cc_library(
     name = "main",
     srcs = ["main.cc"],
     deps = [
-        ":title_screen",
+        ":screens",
         "@libgam//:game",
     ],
 )
@@ -82,23 +63,38 @@ cc_library(
 )
 
 cc_library(
+    name = "screens",
+    srcs = [
+        "battle_screen.cc",
+        "title_screen.cc",
+    ],
+    hdrs = [
+        "battle_screen.h",
+        "title_screen.h",
+    ],
+    deps = [
+        ":boulder",
+        ":catapult",
+        ":clouds",
+        ":map",
+        ":target",
+        "@libgam//:audio",
+        "@libgam//:backdrop",
+        "@libgam//:graphics",
+        "@libgam//:input",
+        "@libgam//:menu",
+        "@libgam//:particle",
+        "@libgam//:screen",
+        "@libgam//:text",
+    ],
+)
+
+cc_library(
     name = "target",
     srcs = ["target.cc"],
     hdrs = ["target.h"],
     deps = [
         "@libgam//:graphics",
         "@libgam//:sprite",
-    ],
-)
-
-cc_library(
-    name = "title_screen",
-    srcs = ["title_screen.cc"],
-    hdrs = ["title_screen.h"],
-    deps = [
-        ":battle_screen",
-        "@libgam//:backdrop",
-        "@libgam//:menu",
-        "@libgam//:screen",
     ],
 )

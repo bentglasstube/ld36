@@ -2,6 +2,8 @@
 
 #include "math.h"
 
+#include "title_screen.h"
+
 #define randf(high, low)  (low + static_cast <float> (rand()) / static_cast <float> (RAND_MAX/(high - low)))
 
 namespace {
@@ -176,7 +178,7 @@ void BattleScreen::draw(Graphics& graphics) const {
 }
 
 Screen* BattleScreen::next_screen() {
-  return NULL;
+  return new TitleScreen();
 }
 
 void BattleScreen::launch_boulder(int x, int y, float angle) {
