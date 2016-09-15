@@ -128,8 +128,10 @@ bool BattleScreen::update(const Input& input, Audio& audio, unsigned int elapsed
       }
 
       // TODO find a better way to do this
-      if (players_[0].is_dead()) p2score_++;
-      if (players_[1].is_dead()) p1score_++;
+      if (mode_ == GameMode::BATTLE) {
+        if (players_[0].is_dead()) p2score_++;
+        if (players_[1].is_dead()) p1score_++;
+      }
 
       break;
 
