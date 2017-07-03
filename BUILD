@@ -1,5 +1,5 @@
 package(default_visibility = ["//visibility:public"])
-load("//tools/windows:winzip.bzl", "winzip")
+load("@mxebzl//tools/windows:rules.bzl", "pkg_winzip")
 
 cc_binary(
     name = "catapults",
@@ -13,11 +13,10 @@ cc_binary(
     deps = ["//src:main"],
 )
 
-winzip(
-    name = "catapults-windows-pkg",
-    srcs = [
+pkg_winzip(
+    name = "catapults-windows",
+    files = [
         ":catapults",
         "//content",
     ],
-    zipfile = "catapults-windows.zip",
 )

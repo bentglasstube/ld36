@@ -4,14 +4,17 @@ git_repository(
     commit = "2d0fb8776d4b12dcbe43c238e68f9210a26a88a2",
 )
 
-new_local_repository(
-    name = "mingw_compiler_win32",
-    path = "tools/mxe",
-    build_file = "mingw_compiler_win32.BUILD",
+git_repository(
+    name = "mxebzl",
+    remote = "https://github.com/cfrantz/mxebzl.git",
+    tag = "20170703_RC02",
 )
 
-new_local_repository(
-    name = "mingw_compiler_win64",
-    path = "tools/mxe",
-    build_file = "mingw_compiler_win64.BUILD",
+load("@mxebzl//tools:repository.bzl", "mxe_compilers")
+mxe_compilers(
+    deps = [
+        "compiler",
+        "SDL2",
+        "SDL2-extras",
+    ],
 )
